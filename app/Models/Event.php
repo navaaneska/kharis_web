@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Event extends Model
+{
+    use HasFactory;
+
+    public function event_categorie()
+    {
+        // return $this->belongsToMany('App\Models\Event_Categorie', 'kategori_id');
+        // return $this->belongsToMany('App\Models\Event_Categorie', 'kategori2_id');
+        // return $this->belongsToMany('App\Models\Event_Categorie', 'kategori3_id');
+
+        return $this->belongsTo('App\Models\Event_Categorie', 'kategori_id');
+        return $this->belongsTo('App\Models\Event_Categorie', 'kategori2_id');
+        return $this->belongsTo('App\Models\Event_Categorie', 'kategori3_id');
+    }
+
+    public function event_media()
+    {
+        return $this->hasMany('App\Models\EventMedia', 'event_id');
+    }
+
+    public function event_peserta()
+    {
+        return $this->hasMany(Event_Peserta::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'created_by');
+        return $this->belongsToMany(User::class, 'updated_by');
+    }
+
+    public function event_pengisi_acara()
+    {
+        return $this->hasMany(EventPengisiAcara::class, 'event_id');
+    }
+}
