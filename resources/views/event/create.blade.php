@@ -3,11 +3,11 @@
 @section('container')
     <div class="container-fluid">
 
-        <div class="container-sm mt-5">
+        <div class="mt-5">
             <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row justify-content-center">
-                    <div class="p-5 bg-light rounded-3 border col-xl-6">
+                    <div class="p-5 bg-light rounded-3 border col-xl-10">
 
                         <div class="mb-3 text-center">
                             <i class="bi-person-circle fs-1"></i>
@@ -27,12 +27,12 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="deskripsi" class="form-label">Deskripsi</label>
-                                <input class="form-control  @error('deskripsi') is-invalid @enderror" type="text"
-                                    name="deskripsi" id="deskripsi" value="{{ old('deskripsi') }}"
-                                    placeholder="Masukkan Deskripsi Event">
+                                <textarea class="form-control  @error('deskripsi') is-invalid @enderror" type="text" name="deskripsi" id="deskripsi"
+                                    value="{{ old('deskripsi') }}" placeholder="Masukkan Deskripsi Event"></textarea>
                                 @error('deskripsi')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
+
 
                             </div>
                             <div class="col-md-6 mb-3">
@@ -176,4 +176,12 @@
             </form>
         </div>
     </div>
+
+    <script>
+        $('#deskripsi').summernote({
+            placeholder: 'masukkan deskripsi',
+            tabsize: 2,
+            height: 100
+        });
+    </script>
 @endsection

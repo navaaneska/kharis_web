@@ -114,7 +114,6 @@
                         <div class="col-md-6 mb-3">
                             <label for="kategori_id" class="form-label">Kategori Satu</label>
                             <select name="kategori_id" id="kategori_id" class="form-select">
-                                <option value=0>-</option>
                                 @foreach ($categories as $categori)
                                     <option value="{{ $categori->id }}"
                                         {{ $event->kategori_id == $categori->id ? 'selected' : '' }}>

@@ -29,6 +29,7 @@ class EventController extends Controller
         $categories = Event_Categorie::all();
         $statuses = ['draft', 'open', 'finish', 'canceled'];
 
+
         // dd($status);
 
         return view('event.create', compact('categories', 'statuses'));
@@ -39,7 +40,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-
 
         $messages = [
             'required' => ':Attribute harus diisi.',
@@ -79,7 +79,6 @@ class EventController extends Controller
         } else {
             $event->kategori3_id = null;
         }
-        $event->kategori3_id = $request->kategori3_id;
         $event->nama = $request->nama;
         $event->deskripsi = $request->deskripsi;
         $event->tanggal_mulai = $request->tanggal_mulai;
