@@ -14,9 +14,16 @@ class EventCategorieSeeder extends Seeder
     public function run(): void
     {
         DB::table('event__categories')->insert([
-            'nama' => 'kategori1',
-            'icon' => 'icon',
-            'image' => 'image',
+            [
+                'nama' => 'kategori1',
+                'icon' => 'icon',
+                'image' => 'image',
+            ], [
+                'nama' => 'kategori2',
+                'icon' => 'icon',
+                'image' => 'image',
+            ]
+
         ]);
     }
 }

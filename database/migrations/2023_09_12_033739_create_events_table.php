@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('status');
             $table->bigInteger('harga');
             $table->integer('maksimal_peserta');
-            $table->string('qr');
+            $table->string('qr')->nullable();
             $table->dateTime('created_at');
             $table->unsignedBigInteger('created_by');
             $table->dateTime('updated_at');

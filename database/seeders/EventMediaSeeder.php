@@ -17,7 +17,8 @@ class EventMediaSeeder extends Seeder
             'event_id' => 1,
             'judul' => 'judul satu',
             'file' => 'file',
-            'jenis' => 'jenis'
+            'jenis' => 'jenis',
+            'utama' => false
         ]);
     }
 }

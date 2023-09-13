@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('judul');
             $table->string('file', 255);
             $table->string('jenis');
+            $table->boolean('utama');
             $table->timestamps();
 
             $table->foreign('event_id')->references('id')->on('events');
