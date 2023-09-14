@@ -19,8 +19,16 @@
             </div>
             <div class="col-md-12 mb-3">
                 <label for="tanggal_mulai" class="form-label">File Image</label><br />
-                <img src="{{ asset('storage/files/event-media/' . $eventMedia->file) }}" alt="{{ $eventMedia->judul }}"
-                    style="width:10%">
+                @if ($eventMedia->jenis == 'image')
+                    <img src="{{ asset('storage/files/event-media/' . $eventMedia->file) }}" alt="{{ $eventMedia->judul }}"
+                        style="width:10%">
+                @elseif ($eventMedia->jenis == 'youtube')
+                    <iframe src="{{ 'https://www.youtube.com/embed/' . $eventMedia->file }}" frameborder="0"></iframe>
+                @else
+                    <iframe src="{{ 'https://open.spotify.com/embed/track/' . $eventMedia->file }}"
+                        frameborder="0"></iframe>
+                @endif
+
             </div>
             <div class="col-md-6 mb-3">
                 <label for="tanggal_selesai" class="form-label">Jenis</label>
@@ -31,7 +39,7 @@
                 <h5>{{ $eventMedia->utama }}</h5>
             </div>
             <div class="col-md-12 mb-3">
-                <label for="tanggal_selesai" class="form-label">Jenis</label>
+                <label for="tanggal_selesai" class="form-label">deskripsi</label>
                 <h5>{{ $eventMedia->deskripsi }}</h5>
             </div>
 

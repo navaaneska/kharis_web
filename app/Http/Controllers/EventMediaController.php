@@ -61,23 +61,37 @@ class EventMediaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // get Image
-        $file = $request->file('file');
+        if ($request->jenis == 'image') {
+            // get Image
+            $file = $request->file('file');
 
-        if ($file != null) {
-            $encryptFileName = $file->hashName();
+            if ($file != null) {
+                $encryptFileName = $file->hashName();
 
-            // file Store
-            $file->store('public/files/event-media');
+                // file Store
+                $file->store('public/files/event-media');
+            }
+        } elseif ($request->jenis == 'youtube') {
+            $get_link_youtube = explode("/", $request->link);
+            $link_youtube = $get_link_youtube[3];
+        } elseif ($request->jenis == 'spotify') {
+            $get_link_spotify = explode("/", $request->link);
+            $link_spotify = $get_link_spotify[4];
         }
 
         $eventMedia = new EventMedia;
         $eventMedia->event_id = $request->nama;
         $eventMedia->judul = $request->judul;
-
-        if ($file != null) {
-            $eventMedia->file = $encryptFileName;
+        if ($request->jenis == 'image') {
+            if ($file != null) {
+                $eventMedia->file = $encryptFileName;
+            }
+        } elseif ($request->jenis == 'youtube') {
+            $eventMedia->file = $link_youtube;
+        } elseif ($request->jenis == 'spotify') {
+            $eventMedia->file = $link_spotify;
         }
+
         $eventMedia->jenis = $request->jenis;
         $eventMedia->deskripsi = $request->deskripsi;
         if ($request->utama == 'utama') {
@@ -151,26 +165,74 @@ class EventMediaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // get Image
-        $file = $request->file('file');
+        $check_jenis = EventMedia::find($id);
+        // dd($check_jenis->jenis);
 
-        if ($file != null) {
-            $media = EventMedia::find($id);
-            $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
+        if ($check_jenis->jenis == 'image') {
+            if ($request->jenis == 'image') {
 
-            if ($media_delete) {
+                // get Image
+                $file = $request->file('file');
+
+                if ($file != null) {
+                    $media = EventMedia::find($id);
+                    $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
+
+                    if ($media_delete) {
+                        $encryptFileName = $file->hashName();
+                        // file Store
+                        $file->store('public/files/event-media');
+                    }
+                }
+            } elseif ($request->jenis == 'youtube') {
+                $media = EventMedia::find($id);
+                $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
+                $get_link_youtube = explode("/", $request->link);
+                $link_youtube = $get_link_youtube[3];
+            } elseif ($request->jenis == 'spotify') {
+                $media = EventMedia::find($id);
+                $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
+                $get_link_spotify = explode("/", $request->link);
+                $link_spotify = $get_link_spotify[4];
+            }
+        } elseif ($request->jenis == 'youtube') {
+            // get link youtube
+            $get_link_youtube = explode("/", $request->link);
+            $link_youtube = $get_link_youtube[3];
+        } elseif ($request->jenis == 'spotify') {
+            // get link spotify
+            $get_link_spotify = explode("/", $request->link);
+            $link_spotify = $get_link_spotify[4];
+        } elseif ($request->jenis == 'image') {
+            // get Image
+            $file = $request->file('file');
+
+            if ($file != null) {
+                // $media = EventMedia::find($id);
+                // $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
+
+                // if ($media_delete) {
                 $encryptFileName = $file->hashName();
                 // file Store
                 $file->store('public/files/event-media');
+                // }
             }
         }
 
         $eventMedia = EventMedia::find($id);
         $eventMedia->event_id = $request->nama;
         $eventMedia->judul = $request->judul;
-        if ($file != null) {
-            $eventMedia->file = $encryptFileName;
+
+        if ($request->jenis == 'image') {
+            if ($file != null) {
+                $eventMedia->file = $encryptFileName;
+            }
+        } elseif ($request->jenis == 'youtube') {
+            $eventMedia->file = $link_youtube;
+        } elseif ($request->jenis == 'spotify') {
+            $eventMedia->file = $link_spotify;
         }
+
         $eventMedia->jenis = $request->jenis;
         $eventMedia->deskripsi = $request->deskripsi;
         if ($request->utama == 'utama') {

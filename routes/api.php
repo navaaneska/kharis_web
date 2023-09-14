@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\EventCategorieController;
 use App\Http\Controllers\API\EventController;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('/event', [EventController::class, 'index']);
     Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);
+    Route::get('/event-categories', [EventCategorieController::class, 'index']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

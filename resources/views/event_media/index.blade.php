@@ -30,13 +30,19 @@
                     <tr>
                         <td>{{ $media->event->nama }}</td>
                         <td>{{ substr($media->judul, 0, 10) }}</td>
-                        <td>{{ substr($media->file, 0, 10) }}</td>
+                        <td>
+                            @if ($media->jenis == 'image')
+                                <img src="{{ asset('storage/files/event-media/' . $media->file) }}" alt="{{ $media->judul }}"
+                                    style="width:10%">
+                            @elseif ($media->jenis == 'youtube')
+                                <iframe src="{{ 'https://www.youtube.com/embed/' . $media->file }}"
+                                    frameborder="0"></iframe>
+                            @else
+                                <iframe src="{{ 'https://open.spotify.com/embed/track/' . $media->file }}"
+                                    frameborder="0"></iframe>
+                            @endif
+                        </td>
                         <td>{{ $media->jenis }}</td>
-
-                        {{-- @if (5 > 20)
-                                <td>{{ substr($media->deskripsi, 0, 20)... }}</td>
-                        @else
-                            <td>{{ $media->deskripsi }}</td>@endif --}}
 
                         @if (strlen($media->deskripsi) > 20)
                             <td> {{ substr($media->deskripsi, 0, 20) }}... </td>

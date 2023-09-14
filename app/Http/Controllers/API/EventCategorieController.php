@@ -3,23 +3,20 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Event;
 use App\Models\Event_Categorie;
 use Illuminate\Http\Request;
 
-class EventController extends Controller
+class EventCategorieController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $events = Event::with('event_categorie', 'event_categorie2')->get();
-
-        // $events = Event_Categorie::with('event')->get();
+        $categories = Event_Categorie::all();
 
         return response()->json([
-            'events' => $events,
+            'categories' => $categories,
         ], 200);
     }
 
@@ -69,19 +66,5 @@ class EventController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-
-    public function event_detail(string $id)
-    {
-        $event_detail = Event::with('event_media', 'event_pengisi_acara')->get();
-        // $event_detail = $get_event_detail::;
-
-
-        // $events = Event_Categorie::with('event')->get();
-
-
-        return response()->json([
-            'event_detail' => $event_detail,
-        ], 200);
     }
 }

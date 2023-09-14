@@ -40,13 +40,12 @@
             </tbody>
         </table>
     </div>
-    <iframe src="https://www.youtube.com/embed/WNb0Bb7bYCQ?si=ZHkF9iKQUvBbqsPK" frameborder="0"></iframe>
+    {{-- <iframe src="https://www.youtube.com/embed/QPCX24ToLHs?si=0ziJFwd_9rfyzN9k" frameborder="0"></iframe>
     <iframe style="border-radius:12px"
         src="https://open.spotify.com/embed/track/0qjuyXWrksQxIRntqz9ZJV?utm_source=generator" width="100%" height="352"
         frameBorder="0" allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    <iframe src="https://open.spotify.com/embed/track/0qjuyXWrksQxIRntqz9ZJV?si=5e260a84a4cb423f" frameborder="0"></iframe>
-    <img src="{{ asset('storage/files/event-media/VVPjdM7OL7D5ZfZ6x5TyDf808bO33usBLwMspsfy.png') }}" alt="">
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> --}}
+
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
