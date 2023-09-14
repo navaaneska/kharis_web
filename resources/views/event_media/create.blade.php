@@ -21,7 +21,7 @@
                                     @foreach ($events as $event)
                                         <option value="{{ $event->id }}" {{ old('nama') == $event ? 'selected' : '' }}>
                                             {{ $event->nama }}</option>
-                                    @endforeacha
+                                    @endforeach
                                 </select>
                                 @error('nama')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
@@ -54,6 +54,14 @@
                                     @endforeach
                                 </select>
                                 @error('jenis')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="deskripsi" class="form-label">deskripsi</label>
+                                <textarea class="form-control  @error('deskripsi') is-invalid @enderror" type="deskripsi" name="deskripsi"
+                                    id="deskripsi" placeholder="Masukkan deskripsi media"></textarea>
+                                @error('deskripsi')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
                             </div>

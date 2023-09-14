@@ -59,20 +59,25 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item {{ $pageTitle == 'Dashboard' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('home') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item {{ $pageTitle == 'Event' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('events.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Events</span></a>
+                    <span>Event</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item {{ $pageTitle == 'Media' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('events-media.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Media</span></a>
+            </li>
+            <li class="nav-item {{ $pageTitle == 'Kategori' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('events-categorie.index') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Kategori</span></a>
             </li>
 
             <!-- Divider -->

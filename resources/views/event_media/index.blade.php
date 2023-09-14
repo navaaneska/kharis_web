@@ -17,6 +17,7 @@
                     <td>judul</td>
                     <td>file</td>
                     <td>jenis</td>
+                    <td>deskripsi</td>
                     <td>utama</td>
                     <td>
                         actions
@@ -31,6 +32,19 @@
                         <td>{{ substr($media->judul, 0, 10) }}</td>
                         <td>{{ substr($media->file, 0, 10) }}</td>
                         <td>{{ $media->jenis }}</td>
+
+                        {{-- @if (5 > 20)
+                                <td>{{ substr($media->deskripsi, 0, 20)... }}</td>
+                        @else
+                            <td>{{ $media->deskripsi }}</td>@endif --}}
+
+                        @if (strlen($media->deskripsi) > 20)
+                            <td> {{ substr($media->deskripsi, 0, 20) }}... </td>
+                        @else
+                            <td> {{ $media->deskripsi }} </td>
+                        @endif
+
+
                         <td>{{ $media->utama }}</td>
                         <td>@include('event_media.actions')</td>
                     </tr>

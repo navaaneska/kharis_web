@@ -61,6 +61,16 @@
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
                             </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="deskripsi" class="form-label">deskripsi</label>
+                                <input class="form-control  @error('deskripsi') is-invalid @enderror" type="text"
+                                    name="deskripsi" id="deskripsi" placeholder="Masukkan deskripsi media"
+                                    value="{{ $eventMedia->deskripsi }}" />
+                                @error('deskripsi')
+                                    <div class="text-danger"><small>{{ $message }}</small>
+                                    </div>
+                                @enderror
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <label for="utama" class="form-label">Utama</label>
                                 <select name="utama" id="utama" class="form-select">

@@ -15,11 +15,12 @@ class EventMediaController extends Controller
      */
     public function index()
     {
+        $pageTitle = "Media";
         $medias = EventMedia::all();
 
         // dd($medias);
 
-        return view('event_media.index', compact('medias'));
+        return view('event_media.index', compact('medias', 'pageTitle'));
     }
 
     /**
@@ -27,11 +28,12 @@ class EventMediaController extends Controller
      */
     public function create()
     {
+        $pageTitle = "Media";
         $events = Event::all();
         $categories = ['image', 'youtube', 'spotify'];
         $utamas = ['utama', 'tidak'];
 
-        return view('event_media.create', compact('categories', 'events', 'utamas'));
+        return view('event_media.create', compact('categories', 'events', 'utamas', 'pageTitle'));
     }
 
     /**
@@ -39,10 +41,6 @@ class EventMediaController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-
-        // dd($request->file('file'));
-
         $messages = [
             'required' => ':Attribute harus diisi.',
             'numeric' => 'Isi :attribute dengan angka',
@@ -54,6 +52,7 @@ class EventMediaController extends Controller
             'judul' => 'required',
             // 'file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'jenis' => 'required',
+            'deskripsi' => 'required',
             'utama' => 'required',
 
         ], $messages);
@@ -80,6 +79,7 @@ class EventMediaController extends Controller
             $eventMedia->file = $encryptFileName;
         }
         $eventMedia->jenis = $request->jenis;
+        $eventMedia->deskripsi = $request->deskripsi;
         if ($request->utama == 'utama') {
             $eventMedia->utama = 1;
         } else {
@@ -97,11 +97,12 @@ class EventMediaController extends Controller
      */
     public function show(string $id)
     {
+        $pageTitle = "Media";
         $eventMedia = EventMedia::find($id);
 
         $file = 'public/files/event-media' . $eventMedia->file;
 
-        return view('event_media.show', compact('eventMedia', 'file'));
+        return view('event_media.show', compact('eventMedia', 'file', 'pageTitle'));
     }
 
     /**
@@ -109,6 +110,7 @@ class EventMediaController extends Controller
      */
     public function edit(string $id)
     {
+        $pageTitle = "Media";
         $eventMedia = EventMedia::find($id);
         $events = Event::all();
         $categories = ['image', 'youtube', 'spotify'];
@@ -121,7 +123,7 @@ class EventMediaController extends Controller
         }
 
 
-        return view('event_media.edit', compact('eventMedia', 'utamas', 'categories', 'getUtama', 'events'));
+        return view('event_media.edit', compact('eventMedia', 'utamas', 'categories', 'getUtama', 'events', 'pageTitle'));
     }
 
     /**
@@ -140,6 +142,7 @@ class EventMediaController extends Controller
             'judul' => 'required',
             // 'file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'jenis' => 'required',
+            'deskripsi' => 'required',
             'utama' => 'required',
 
         ], $messages);
@@ -152,10 +155,14 @@ class EventMediaController extends Controller
         $file = $request->file('file');
 
         if ($file != null) {
-            $encryptFileName = $file->hashName();
+            $media = EventMedia::find($id);
+            $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
 
-            // file Store
-            $file->store('public/files/event-media');
+            if ($media_delete) {
+                $encryptFileName = $file->hashName();
+                // file Store
+                $file->store('public/files/event-media');
+            }
         }
 
         $eventMedia = EventMedia::find($id);
@@ -165,6 +172,7 @@ class EventMediaController extends Controller
             $eventMedia->file = $encryptFileName;
         }
         $eventMedia->jenis = $request->jenis;
+        $eventMedia->deskripsi = $request->deskripsi;
         if ($request->utama == 'utama') {
             $eventMedia->utama = 1;
         } else {
@@ -181,6 +189,11 @@ class EventMediaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $media = EventMedia::find($id);
+        $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
+        if ($media_delete) {
+            $media->delete();
+        }
+        return redirect()->route('events-media.index');
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventCategorieController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventMediaController;
 use Illuminate\Support\Facades\Auth;
@@ -34,4 +35,5 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('events', EventController::class);
     Route::resource('events-media', EventMediaController::class);
+    Route::resource('events-categorie', EventCategorieController::class);
 });

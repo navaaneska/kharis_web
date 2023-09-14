@@ -5,7 +5,7 @@
     <div class="container-sm my-5" style="width: 60%">
         <div class="mb-3 text-center">
             <i class="bi-person-circle fs-1"></i>
-            <h4>Detail Media Event</h4>
+            <h4>Detail Event Media</h4>
         </div>
         <hr>
         <div class="row">
@@ -18,10 +18,9 @@
                 <h5>{{ $eventMedia->judul }}</h5>
             </div>
             <div class="col-md-12 mb-3">
-                <label for="tanggal_mulai" class="form-label">File Image</label>
-                <img alt="{{ $eventMedia->judul }}t">
-
-                <h5>{{ $eventMedia->file }}</h5>
+                <label for="tanggal_mulai" class="form-label">File Image</label><br />
+                <img src="{{ asset('storage/files/event-media/' . $eventMedia->file) }}" alt="{{ $eventMedia->judul }}"
+                    style="width:10%">
             </div>
             <div class="col-md-6 mb-3">
                 <label for="tanggal_selesai" class="form-label">Jenis</label>
@@ -31,11 +30,16 @@
                 <label for="lat" class="form-label">Utama</label>
                 <h5>{{ $eventMedia->utama }}</h5>
             </div>
+            <div class="col-md-12 mb-3">
+                <label for="tanggal_selesai" class="form-label">Jenis</label>
+                <h5>{{ $eventMedia->deskripsi }}</h5>
+            </div>
+
 
         </div>
         <div class="row">
             <div class="col-md-12 d-grid">
-                <a href="{{ route('events.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i
+                <a href="{{ route('events-media.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i
                         class="bi-arrow-left-circle me-2"></i> Back</a>
             </div>
         </div>

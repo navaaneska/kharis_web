@@ -14,11 +14,17 @@ class EventController extends Controller
      */
     public function index()
     {
+        $pageTitle = "Event";
+        $url = 'https://www.youtube.com/live/WNb0Bb7bYCQ?si=ZHkF9iKQUvBbqsPK';
+        ini_set('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+        $meta_tags = get_meta_tags($url);
+        // print_r($meta_tags);
+
         $events = Event::all();
 
         // dd($events);
 
-        return view('event.index', compact('events'));
+        return view('event.index', compact('events', 'meta_tags', 'url', 'pageTitle'));
     }
 
     /**
@@ -26,13 +32,14 @@ class EventController extends Controller
      */
     public function create()
     {
+        $pageTitle = "Event";
         $categories = Event_Categorie::all();
         $statuses = ['draft', 'open', 'finish', 'canceled'];
 
 
         // dd($status);
 
-        return view('event.create', compact('categories', 'statuses'));
+        return view('event.create', compact('categories', 'statuses', 'pageTitle'));
     }
 
     /**
@@ -106,9 +113,10 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
+        $pageTitle = "Event";
         $event = Event::find($id);
 
-        return view('event.show', compact('event'));
+        return view('event.show', compact('event', 'pageTitle'));
     }
 
     /**
@@ -116,11 +124,12 @@ class EventController extends Controller
      */
     public function edit(string $id)
     {
+        $pageTitle = "Event";
         $event = Event::find($id);
         $statuses = ['draft', 'open', 'finish', 'canceled'];
         $categories = Event_Categorie::all();
 
-        return view('event.edit', compact('event', 'statuses', 'categories'));
+        return view('event.edit', compact('event', 'statuses', 'categories', 'pageTitle'));
     }
 
     /**

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('judul');
             $table->string('file', 255);
             $table->string('jenis');
+            $table->string('deskripsi');
             $table->boolean('utama');
             $table->timestamps();
 
