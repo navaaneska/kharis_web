@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Event_Categorie;
+use App\Models\EventMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -116,8 +117,10 @@ class EventController extends Controller
     {
         $pageTitle = "Event";
         $event = Event::find($id);
+        $get_medias = EventMedia::all();
+        $medias = $get_medias->where('event_id', '=', $id);
 
-        return view('event.show', compact('event', 'pageTitle'));
+        return view('event.show', compact('event', 'pageTitle', 'medias'));
     }
 
     /**

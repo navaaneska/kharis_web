@@ -17,7 +17,7 @@
                         <div class="row">
                             <div class="col-md-12 mb-3">
                                 <label for="nama" class="form-label">Nama Events</label>
-                                <select name="nama" id="nama" class="form-select">
+                                {{-- <select name="nama" id="nama" class="form-select">
                                     @foreach ($events as $event)
                                         <option value="{{ $event->id }}" {{ old('nama') == $event ? 'selected' : '' }}>
                                             {{ $event->nama }}</option>
@@ -25,7 +25,10 @@
                                 </select>
                                 @error('nama')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
-                                @enderror
+                                @enderror --}}
+                                <h6>{{ $event->nama }}</h6>
+                                <input type="text" name="nama" id="nama" value="{{ $event->id }}"
+                                    style="display: none">
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="judul" class="form-label">judul</label>

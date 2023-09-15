@@ -13,7 +13,7 @@
 
                         <div class="mb-3 text-center">
                             <i class="bi-person-circle fs-1"></i>
-                            <h4>Create Media Events</h4>
+                            <h4>Edit Media Events</h4>
                         </div>
                         <hr>
                         <div class="row">
@@ -68,7 +68,9 @@
                             <div class="col-md-12 mb-3">
                                 <label for="link" class="form-label">link</label>
                                 <input class="form-control  @error('link') is-invalid @enderror" type="text"
-                                    name="link" id="link" value="{{ old('link') }}"
+                                    name="link" id="link"
+                                    value="@if ($eventMedia->jenis == 'youtube') {{ 'https://youtu.be/' . $eventMedia->file }}
+                                    @elseif ($eventMedia->jenis == 'spotify') {{ 'https://open.spotify.com/track/' . $eventMedia->file }} @endif"
                                     placeholder="Masukkan link spotify atau youtube" />
                                 @error('link')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
@@ -101,8 +103,9 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-6 d-grid">
-                                <a href="{{ route('events-media.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i
-                                        class="bi-arrow-left-circle me-2"></i> Cancel</a>
+                                <a href="{{ route('events.show', ['event' => $eventMedia->event_id]) }}"
+                                    class="btn btn-outline-dark btn-lg mt-3"><i class="bi-arrow-left-circle me-2"></i>
+                                    Cancel</a>
                             </div>
                             <div class="col-md-6 d-grid">
                                 <button type="submit" class="btn btn-dark btn-lg mt-3"><i class="bi-check-circle me-2"></i>

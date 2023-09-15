@@ -8,7 +8,7 @@
         <form action="{{ route('events-media.destroy', ['events_medium' => $media->id]) }}" method="POST">
             @csrf
             @method('delete')
-            <button type="submit" class="btn btn-outline-dark btn-sm me-2 btn-delete" {{-- data-name="{{ $employee->firstname . ' ' . $employee->lastname }}" --}}>
+            <button type="submit" class="btn btn-outline-dark btn-sm me-2 btn-delete">
                 <i class="bi-trash"></i>
             </button>
         </form>

@@ -6,8 +6,8 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Media</h1>
-            <a href="{{ route('events-media.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-download fa-sm text-white-50"></i> Create Media</a>
+            {{-- <a href="{{ route('events-media.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                    class="fas fa-download fa-sm text-white-50"></i> Create Media</a> --}}
         </div>
 
         <table id="myTable" class="table">

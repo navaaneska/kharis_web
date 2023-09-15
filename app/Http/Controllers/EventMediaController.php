@@ -18,7 +18,6 @@ class EventMediaController extends Controller
     {
         $pageTitle = "Media";
         $medias = EventMedia::all();
-
         // dd($medias);
 
         return view('event_media.index', compact('medias', 'pageTitle'));
@@ -34,8 +33,20 @@ class EventMediaController extends Controller
         $categories = ['image', 'youtube', 'spotify'];
         $utamas = ['utama', 'tidak'];
 
+
         return view('event_media.create', compact('categories', 'events', 'utamas', 'pageTitle'));
     }
+
+    public function createNew(string $id)
+    {
+        $pageTitle = "Media";
+        $event = Event::find($id);
+        $categories = ['image', 'youtube', 'spotify'];
+        $utamas = ['utama', 'tidak'];
+
+        return view('event_media.create', compact('categories', 'event', 'utamas', 'pageTitle'));
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -120,7 +131,7 @@ class EventMediaController extends Controller
 
         $eventMedia->save();
 
-        return redirect()->route('events-media.index');
+        return redirect()->route('events.index');
     }
 
     /**
@@ -130,6 +141,7 @@ class EventMediaController extends Controller
     {
         $pageTitle = "Media";
         $eventMedia = EventMedia::find($id);
+
 
         $file = 'public/files/event-media' . $eventMedia->file;
 
@@ -286,7 +298,7 @@ class EventMediaController extends Controller
 
 
         $eventMedia->save();
-        return redirect()->route('events-media.index');
+        return redirect()->route('events.show', ['event' => $request->nama]);
     }
 
     /**
@@ -299,6 +311,6 @@ class EventMediaController extends Controller
         if ($media_delete) {
             $media->delete();
         }
-        return redirect()->route('events-media.index');
+        return redirect()->route('events.show', ['event' => $media->event_id]);
     }
 }

@@ -13,4 +13,8 @@
             </button>
         </form>
     </div>
+
+    <a href="{{ route('events-media.createNew', ['id' => $event->id]) }}"
+        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        Create Media</a>
 </div>

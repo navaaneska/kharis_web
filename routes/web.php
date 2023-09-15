@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::resource('events', EventController::class);
+    Route::get('events-media/create-new/{id}', [EventMediaController::class, 'createNew'])->name('events-media.createNew');
     Route::resource('events-media', EventMediaController::class);
     Route::resource('events-categorie', EventCategorieController::class);
 });

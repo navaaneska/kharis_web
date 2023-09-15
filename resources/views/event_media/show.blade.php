@@ -23,7 +23,10 @@
                     <img src="{{ asset('storage/files/event-media/' . $eventMedia->file) }}" alt="{{ $eventMedia->judul }}"
                         style="width:10%">
                 @elseif ($eventMedia->jenis == 'youtube')
-                    <iframe src="{{ 'https://www.youtube.com/embed/' . $eventMedia->file }}" frameborder="0"></iframe>
+                    {{-- <iframe src="{{ 'https://www.youtube.com/embed/' . $eventMedia->file }}"
+                                    frameborder="0"></iframe> --}}
+                    <a href="{{ 'https://www.youtube.com/live/' . $eventMedia->file }}" target="_blank"><img
+                            src="{{ $eventMedia->thumbnail }}" style="width: 50%"></a>
                 @else
                     <iframe src="{{ 'https://open.spotify.com/embed/track/' . $eventMedia->file }}"
                         frameborder="0"></iframe>
@@ -47,8 +50,8 @@
         </div>
         <div class="row">
             <div class="col-md-12 d-grid">
-                <a href="{{ route('events-media.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i
-                        class="bi-arrow-left-circle me-2"></i> Back</a>
+                <a href="{{ route('events.show', ['event' => $eventMedia->event_id]) }}"
+                    class="btn btn-outline-dark btn-lg mt-3"><i class="bi-arrow-left-circle me-2"></i> Back</a>
             </div>
         </div>
 
