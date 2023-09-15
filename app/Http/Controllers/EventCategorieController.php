@@ -42,8 +42,8 @@ class EventCategorieController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'icon' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
-            'image' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
+            'icon' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
 
         ], $messages);
 

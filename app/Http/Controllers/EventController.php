@@ -14,17 +14,13 @@ class EventController extends Controller
      */
     public function index()
     {
-        $pageTitle = "Event";
-        $url = 'https://www.youtube.com/live/WNb0Bb7bYCQ?si=ZHkF9iKQUvBbqsPK';
-        ini_set('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
-        $meta_tags = get_meta_tags($url);
-        // print_r($meta_tags);
 
+        $pageTitle = "Event";
         $events = Event::all();
 
         // dd($events);
 
-        return view('event.index', compact('events', 'meta_tags', 'url', 'pageTitle'));
+        return view('event.index', compact('events', 'pageTitle'));
     }
 
     /**
@@ -87,6 +83,11 @@ class EventController extends Controller
             $event->kategori3_id = null;
         }
         $event->nama = $request->nama;
+
+        // Get Slug Name
+        $title = $request->nama;
+        $title_slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $title);
+        $event->nama_slug = $title_slug;
         $event->deskripsi = $request->deskripsi;
         $event->tanggal_mulai = $request->tanggal_mulai;
         $event->tanggal_selesai = $request->tanggal_selesai;

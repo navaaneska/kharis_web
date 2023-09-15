@@ -35,8 +35,10 @@
                                 <img src="{{ asset('storage/files/event-media/' . $media->file) }}" alt="{{ $media->judul }}"
                                     style="width:10%">
                             @elseif ($media->jenis == 'youtube')
-                                <iframe src="{{ 'https://www.youtube.com/embed/' . $media->file }}"
-                                    frameborder="0"></iframe>
+                                {{-- <iframe src="{{ 'https://www.youtube.com/embed/' . $media->file }}"
+                                    frameborder="0"></iframe> --}}
+                                <a href="{{ 'https://www.youtube.com/live/' . $media->file }}" target="_blank"><img
+                                        src="{{ $media->thumbnail }}" style="width: 50%"></a>
                             @else
                                 <iframe src="{{ 'https://open.spotify.com/embed/track/' . $media->file }}"
                                     frameborder="0"></iframe>

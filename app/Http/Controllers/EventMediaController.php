@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\EventMedia;
+use DOMDocument;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -72,11 +73,25 @@ class EventMediaController extends Controller
                 $file->store('public/files/event-media');
             }
         } elseif ($request->jenis == 'youtube') {
+            // get Link Youtube
             $get_link_youtube = explode("/", $request->link);
             $link_youtube = $get_link_youtube[3];
+
+            // get thumbnail youtube
+            $url = "https://www.youtube.com/live/" . $link_youtube;
+            ini_set('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+            $get_thumbnail_youtube = get_meta_tags($url);
+            $thumbnail_youtube = $get_thumbnail_youtube['twitter:image'];
         } elseif ($request->jenis == 'spotify') {
+            // get Link Spotify
             $get_link_spotify = explode("/", $request->link);
             $link_spotify = $get_link_spotify[4];
+
+            // get thumbnail Spotify
+            $url = $request->link;
+            ini_set('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+            $get_thumbnail_spotify = get_meta_tags($url);
+            $thumbnail_spotify = $get_thumbnail_spotify['twitter:image'];
         }
 
         $eventMedia = new EventMedia;
@@ -88,8 +103,10 @@ class EventMediaController extends Controller
             }
         } elseif ($request->jenis == 'youtube') {
             $eventMedia->file = $link_youtube;
+            $eventMedia->thumbnail = $thumbnail_youtube;
         } elseif ($request->jenis == 'spotify') {
             $eventMedia->file = $link_spotify;
+            $eventMedia->thumbnail = $thumbnail_spotify;
         }
 
         $eventMedia->jenis = $request->jenis;
@@ -189,20 +206,44 @@ class EventMediaController extends Controller
                 $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
                 $get_link_youtube = explode("/", $request->link);
                 $link_youtube = $get_link_youtube[3];
+
+                // get thumbnail youtube
+                $url = "https://www.youtube.com/live/" . $link_youtube;
+                ini_set('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+                $get_thumbnail_youtube = get_meta_tags($url);
+                $thumbnail_youtube = $get_thumbnail_youtube['twitter:image'];
             } elseif ($request->jenis == 'spotify') {
                 $media = EventMedia::find($id);
                 $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
                 $get_link_spotify = explode("/", $request->link);
                 $link_spotify = $get_link_spotify[4];
+
+                // get thumbnail spotify
+                $url = $request->link;
+                ini_set('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+                $get_thumbnail_spotify = get_meta_tags($url);
+                $thumbnail_spotify = $get_thumbnail_spotify['twitter:image'];
             }
         } elseif ($request->jenis == 'youtube') {
             // get link youtube
             $get_link_youtube = explode("/", $request->link);
             $link_youtube = $get_link_youtube[3];
+
+            // get thumbnail youtube
+            $url = "https://www.youtube.com/live/" . $link_youtube;
+            ini_set('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+            $get_thumbnail_youtube = get_meta_tags($url);
+            $thumbnail_youtube = $get_thumbnail_youtube['twitter:image'];
         } elseif ($request->jenis == 'spotify') {
             // get link spotify
             $get_link_spotify = explode("/", $request->link);
             $link_spotify = $get_link_spotify[4];
+
+            // get thumbnail spotify
+            $url = $request->link;
+            ini_set('user_agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+            $get_thumbnail_spotify = get_meta_tags($url);
+            $thumbnail_spotify = $get_thumbnail_spotify['twitter:image'];
         } elseif ($request->jenis == 'image') {
             // get Image
             $file = $request->file('file');
@@ -229,8 +270,10 @@ class EventMediaController extends Controller
             }
         } elseif ($request->jenis == 'youtube') {
             $eventMedia->file = $link_youtube;
+            $eventMedia->thumbnail = $thumbnail_youtube;
         } elseif ($request->jenis == 'spotify') {
             $eventMedia->file = $link_spotify;
+            $eventMedia->thumbnail = $thumbnail_spotify;
         }
 
         $eventMedia->jenis = $request->jenis;

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kategori2_id')->nullable();
             $table->unsignedBigInteger('kategori3_id')->nullable();
             $table->string('nama', 100);
+            $table->string('nama_slug', 100);
             $table->dateTime('tanggal_mulai');
             $table->dateTime('tanggal_selesai');
             $table->string('deskripsi');
