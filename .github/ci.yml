@@ -1,0 +1,25 @@
+name: CI
+
+on: 
+  push:
+    branches:
+      - main
+  # pull_request:
+  #   branches:
+  #     - master
+
+jobs:
+  deploy: 
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push to kharis.timapp.id
+        uses: appleboy/ssh-action@master
+        with:
+          host: kharis.timapp.id
+          username: ${{ secrets.DEFAULT_SERVER_USERNAME }}
+          password: ${{ secrets.DEFAULT_SERVER_PASSWORD }}
+          script: 
+            cd /var/www/html/kharis.timapp.id  && 
+            git pull origin main && 
+            git status
