@@ -73,7 +73,8 @@ class EventController extends Controller
 
     public function event_detail(string $id)
     {
-        $event_detail = Event::with('event_media', 'event_pengisi_acara')->get();
+        // $get_event_detail = Event::find($id);
+        $event_detail = Event::with('event_media', 'event_pengisi_acara', 'event_categorie', 'event_categorie2')->get()->find($id);
         // $event_detail = $get_event_detail::;
 
 

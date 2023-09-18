@@ -32,8 +32,6 @@
                                 @error('deskripsi')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
-
-
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
@@ -62,7 +60,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="lat" class="form-label">Latitude</label>
                                 <input class="form-control  @error('lat') is-invalid @enderror" type="text"
-                                    name="lat" id="lat" value="{{ old('lat') }}" placeholder="Enter Last Name">
+                                    name="lat" id="lat" value="{{ old('lat') }}" placeholder="Enter Latitude">
                                 @error('lat')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
@@ -70,7 +68,8 @@
                             <div class="col-md-6 mb-3">
                                 <label for="lng" class="form-label">Longitude</label>
                                 <input class="form-control  @error('lng') is-invalid @enderror" type="text"
-                                    name="lng" id="lng" value="{{ old('lng') }}" placeholder="Enter lng">
+                                    name="lng" id="lng" value="{{ old('lng') }}"
+                                    placeholder="Enter longitude">
                                 @error('lng')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
@@ -85,7 +84,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="status" class="form-label">status</label>
+                                <label for="status" class="form-label">Status</label>
                                 <select name="status" id="status" class="form-select">
                                     @foreach ($statuses as $status)
                                         <option value="{{ $status }}"
@@ -94,6 +93,19 @@
                                     @endforeach
                                 </select>
                                 @error('status')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="online" class="form-label">Online</label>
+                                <select name="online" id="online" class="form-select">
+                                    @foreach ($onlines as $online)
+                                        <option value="{{ $online }}"
+                                            {{ old('categori') == $online ? 'selected' : '' }}>
+                                            {{ $online }}</option>
+                                    @endforeach
+                                </select>
+                                @error('online')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
                             </div>

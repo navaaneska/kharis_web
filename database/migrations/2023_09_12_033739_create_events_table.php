@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('lng');
             $table->string('ketentuan');
             $table->string('status');
+            $table->tinyInteger('online');
             $table->bigInteger('harga');
             $table->integer('maksimal_peserta');
             $table->string('qr')->nullable();
@@ -32,7 +33,6 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by');
             $table->dateTime('updated_at');
             $table->unsignedBigInteger('updated_by');
-
             $table->foreign('kategori_id')->references('id')->on('event__categories');
             $table->foreign('kategori2_id')->references('id')->on('event__categories');
             $table->foreign('kategori3_id')->references('id')->on('event__categories');

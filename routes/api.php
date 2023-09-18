@@ -29,8 +29,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('/event', [EventController::class, 'index']);
     Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);
-    Route::get('/event-categories', [EventCategorieController::class, 'index']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::get('/event-categories', [EventCategorieController::class, 'index']);

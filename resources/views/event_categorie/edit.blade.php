@@ -13,7 +13,7 @@
 
                         <div class="mb-3 text-center">
                             <i class="bi-person-circle fs-1"></i>
-                            <h4>Create Media Events</h4>
+                            <h4>Edit Categories</h4>
                         </div>
                         <hr>
                         <div class="row">
@@ -45,8 +45,9 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-6 d-grid">
-                                    <a href="{{ route('events-media.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i
-                                            class="bi-arrow-left-circle me-2"></i> Cancel</a>
+                                    <a href="{{ route('events-categorie.index') }}"
+                                        class="btn btn-outline-dark btn-lg mt-3"><i class="bi-arrow-left-circle me-2"></i>
+                                        Cancel</a>
                                 </div>
                                 <div class="col-md-6 d-grid">
                                     <button type="submit" class="btn btn-dark btn-lg mt-3"><i

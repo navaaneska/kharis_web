@@ -32,11 +32,12 @@ class EventController extends Controller
         $pageTitle = "Event";
         $categories = Event_Categorie::all();
         $statuses = ['draft', 'open', 'finish', 'canceled'];
+        $onlines = ['online', 'onsite', 'hybrid'];
 
 
         // dd($status);
 
-        return view('event.create', compact('categories', 'statuses', 'pageTitle'));
+        return view('event.create', compact('categories', 'statuses', 'pageTitle', 'onlines'));
     }
 
     /**
@@ -59,6 +60,7 @@ class EventController extends Controller
             'lng' => 'required|numeric',
             'ketentuan' => 'required',
             'status' => 'required',
+            'online' => 'required',
             'harga' => 'required',
             'maksimal_peserta' => 'required',
             'kategori_id' => 'required',
@@ -96,6 +98,13 @@ class EventController extends Controller
         $event->lng = $request->lng;
         $event->ketentuan = $request->ketentuan;
         $event->status = $request->status;
+        if ($request->online == 'online') {
+            $event->online = 0;
+        } elseif ($request->online == 'onsite') {
+            $event->online = 1;
+        } else {
+            $event->online = 2;
+        }
         $event->harga = $request->harga;
         $event->maksimal_peserta = $request->maksimal_peserta;
         $event->qr = null;
@@ -132,8 +141,17 @@ class EventController extends Controller
         $event = Event::find($id);
         $statuses = ['draft', 'open', 'finish', 'canceled'];
         $categories = Event_Categorie::all();
+        $onlines = ['online', 'onsite', 'hybrid'];
 
-        return view('event.edit', compact('event', 'statuses', 'categories', 'pageTitle'));
+        if ($event->online == 0) {
+            $getOnline = 'online';
+        } elseif ($event->online == 1) {
+            $getOnline = 'onsite';
+        } else {
+            $getOnline = 'hybrid';
+        }
+
+        return view('event.edit', compact('event', 'statuses', 'categories', 'pageTitle', 'onlines', 'getOnline'));
     }
 
     /**
@@ -155,6 +173,7 @@ class EventController extends Controller
             'lng' => 'required|numeric',
             'ketentuan' => 'required',
             'status' => 'required',
+            'online' => 'required',
             'harga' => 'required',
             'maksimal_peserta' => 'required',
             'kategori_id' => 'required',
@@ -186,6 +205,13 @@ class EventController extends Controller
         $event->lng = $request->lng;
         $event->ketentuan = $request->ketentuan;
         $event->status = $request->status;
+        if ($request->online == 'online') {
+            $event->online = 0;
+        } elseif ($request->online == 'onsite') {
+            $event->online = 1;
+        } else {
+            $event->online = 2;
+        }
         $event->harga = $request->harga;
         $event->maksimal_peserta = $request->maksimal_peserta;
         $event->qr = null;

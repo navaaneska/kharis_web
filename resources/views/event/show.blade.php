@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-12 mb-3">
                 <label for="deskripsi" class="form-label">Deskripsi Events</label>
-                <h5>{{ $event->deskripsi }}</h5>
+                <div>{!! $event->deskripsi !!}</div>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="tanggal_mulai" class="form-label">Tanggal Mulai Events</label>
@@ -64,8 +64,9 @@
                                 <a href="{{ 'https://www.youtube.com/live/' . $media->file }}" target="_blank"><img
                                         src="{{ $media->thumbnail }}" style="width: 100%"></a>
                             @else
-                                <iframe src="{{ 'https://open.spotify.com/embed/track/' . $media->file }}"
-                                    frameborder="0"></iframe>
+                                <img src="{{ $media->thumbnail }}" alt="" srcset="">
+                                {{-- <iframe src="{{ 'https://open.spotify.com/embed/track/' . $media->file }}"
+                                    frameborder="0"></iframe> --}}
                             @endif
                         </div>
                         <div class="col-md-6">
