@@ -25,14 +25,13 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <input class="form-control  @error('deskripsi') is-invalid @enderror" type="text"
-                                name="deskripsi" id="deskripsi" value="{{ $event->deskripsi }}"
-                                placeholder="Masukkan Deskripsi Event">
+                            <textarea class="form-control  @error('deskripsi') is-invalid @enderror" type="text" name="deskripsi" id="deskripsi"
+                                value="{{ old('deskripsi') }}" placeholder="Masukkan Deskripsi Event">{{ $event->deskripsi }}</textarea>
                             @error('deskripsi')
                                 <div class="text-danger"><small>{{ $message }}</small></div>
                             @enderror
-
                         </div>
+
                         <div class="col-md-6 mb-3">
                             <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
                             <input class="form-control  @error('tanggal_mulai') is-invalid @enderror" type="datetime-local"
@@ -91,6 +90,18 @@
                                 @endforeach
                             </select>
                             @error('status')
+                                <div class="text-danger"><small>{{ $message }}</small></div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="online" class="form-label">online</label>
+                            <select name="online" id="online" class="form-select">
+                                @foreach ($onlines as $online)
+                                    <option value="{{ $online }}" {{ $getOnline == $online ? 'selected' : '' }}>
+                                        {{ $online }}</option>
+                                @endforeach
+                            </select>
+                            @error('utama')
                                 <div class="text-danger"><small>{{ $message }}</small></div>
                             @enderror
                         </div>
@@ -168,4 +179,12 @@
             </div>
         </form>
     </div>
+
+    <script>
+        $('#deskripsi').summernote({
+            placeholder: 'masukkan deskripsi',
+            tabsize: 2,
+            height: 100
+        });
+    </script>
 @endsection
