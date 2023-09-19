@@ -20,6 +20,6 @@ jobs:
           username: ${{ secrets.DEFAULT_SERVER_USERNAME }}
           password: ${{ secrets.DEFAULT_SERVER_PASSWORD }}
           script: 
-            cd /var/www/html/kharis.timapp.id  && 
+            cd /var/www/html/app  && 
             git pull origin main && 
             git status
