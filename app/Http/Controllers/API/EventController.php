@@ -127,7 +127,14 @@ class EventController extends Controller
                 $get_event_by_kategori = Event::with('event_media')->where('kategori_id', $request->kategori)
                     ->orWhere('kategori2_id', $request->kategori)
                     ->orWhere('kategori3_id', $request->kategori)->get();
-                $get_event_by_onsite = $get_event_by_kategori->where('online', 0);
+
+                $get_event_by_onsite = [];
+                for ($i = 0; $i < count($get_event_by_kategori); $i++) {
+                    if ($get_event_by_kategori[$i]['online'] == '0') {
+                        array_push($get_event_by_onsite, $get_event_by_kategori[$i]);
+                    }
+                }
+
                 return response()->json([
                     'get_event_by_onsite' => $get_event_by_onsite,
                 ], 200);
@@ -136,7 +143,13 @@ class EventController extends Controller
                 $get_event_by_kategori = Event::with('event_media')->where('kategori_id', $request->kategori)
                     ->orWhere('kategori2_id', $request->kategori)
                     ->orWhere('kategori3_id', $request->kategori)->get();
-                $get_event_by_online = $get_event_by_kategori->where('online', 1);
+
+                $get_event_by_online = [];
+                for ($i = 0; $i < count($get_event_by_kategori); $i++) {
+                    if ($get_event_by_kategori[$i]['online'] == '1') {
+                        array_push($get_event_by_online, $get_event_by_kategori[$i]);
+                    }
+                }
                 return response()->json([
                     'get_event_by_online' => $get_event_by_online,
                 ], 200);
@@ -145,7 +158,13 @@ class EventController extends Controller
                 $get_event_by_kategori = Event::with('event_media')->where('kategori_id', $request->kategori)
                     ->orWhere('kategori2_id', $request->kategori)
                     ->orWhere('kategori3_id', $request->kategori)->get();
-                $get_event_by_hybrid = $get_event_by_kategori->where('online', 2);
+
+                $get_event_by_hybrid = [];
+                for ($i = 0; $i < count($get_event_by_kategori); $i++) {
+                    if ($get_event_by_kategori[$i]['online'] == '2') {
+                        array_push($get_event_by_hybrid, $get_event_by_kategori[$i]);
+                    }
+                }
                 return response()->json([
                     'get_event_by_hybrid' => $get_event_by_hybrid,
                 ], 200);
