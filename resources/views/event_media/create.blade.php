@@ -93,7 +93,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-6 d-grid">
-                                <a href="{{ route('events-media.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i
+                                <a href="{{ route('events.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i
                                         class="bi-arrow-left-circle me-2"></i> Cancel</a>
                             </div>
                             <div class="col-md-6 d-grid">

@@ -28,8 +28,8 @@
                     <a href="{{ 'https://www.youtube.com/live/' . $eventMedia->file }}" target="_blank"><img
                             src="{{ $eventMedia->thumbnail }}" style="width: 50%"></a>
                 @else
-                    <iframe src="{{ 'https://open.spotify.com/embed/track/' . $eventMedia->file }}"
-                        frameborder="0"></iframe>
+                    <a href="{{ 'https://open.spotify.com/episode/' . $eventMedia->file }}"><img
+                            src="{{ $eventMedia->thumbnail }}" style="width: 30%"></a>
                 @endif
 
             </div>

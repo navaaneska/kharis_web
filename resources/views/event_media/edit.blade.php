@@ -70,7 +70,7 @@
                                 <input class="form-control  @error('link') is-invalid @enderror" type="text"
                                     name="link" id="link"
                                     value="@if ($eventMedia->jenis == 'youtube') {{ 'https://youtu.be/' . $eventMedia->file }}
-                                    @elseif ($eventMedia->jenis == 'spotify') {{ 'https://open.spotify.com/track/' . $eventMedia->file }} @endif"
+                                    @elseif ($eventMedia->jenis == 'spotify') {{ 'https://open.spotify.com/episode/' . $eventMedia->file }} @endif"
                                     placeholder="Masukkan link spotify atau youtube" />
                                 @error('link')
                                     <div class="text-danger"><small>{{ $message }}</small></div>

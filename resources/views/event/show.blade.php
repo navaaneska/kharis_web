@@ -64,7 +64,8 @@
                                 <a href="{{ 'https://www.youtube.com/live/' . $media->file }}" target="_blank"><img
                                         src="{{ $media->thumbnail }}" style="width: 100%"></a>
                             @else
-                                <img src="{{ $media->thumbnail }}" alt="" srcset="">
+                                <a href="{{ 'https://open.spotify.com/episode/' . $media->file }}"><img
+                                        src="{{ $media->thumbnail }}" style="width: 70%"></a>
                                 {{-- <iframe src="{{ 'https://open.spotify.com/embed/track/' . $media->file }}"
                                     frameborder="0"></iframe> --}}
                             @endif

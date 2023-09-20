@@ -71,6 +71,37 @@ class EventController extends Controller
         //
     }
 
+    public function event_kategori_by_jenis_kategori(string $kategori)
+    {
+        // $get_event_by_kategori = Event::where('kategori_id', $kategori)
+        //     ->orWhere('kategori2_id', $request->kategori)
+        //     ->orWhere('kategori3_id', $request->kategori)
+        //     ->get();
+
+        // $get_event_by_onsite = $get_event_by_kategori->where('online', 0);
+        // $get_event_by_online = $get_event_by_kategori->where('online', 1);
+        // $get_event_by_hybrid = $get_event_by_kategori->where('online', 2);
+
+        // $get_event_by_kategori = Event::where('kategori_id', $kategori)
+
+        $get_event_by_kategori = Event::with('event_media')->where('kategori_id', $kategori)
+            ->orWhere('kategori2_id', $kategori)
+            ->orWhere('kategori3_id', $kategori)
+            ->get();
+
+        $get_event_by_onsite = $get_event_by_kategori->where('online', 0);
+        $get_event_by_online = $get_event_by_kategori->where('online', 1);
+        $get_event_by_hybrid = $get_event_by_kategori->where('online', 2);
+
+        return response()->json([
+            'get_event_by_kategori' => $get_event_by_kategori,
+            'get_event_by_onsite' => $get_event_by_onsite,
+            'get_event_by_online' => $get_event_by_online,
+            'get_event_by_hybrid' => $get_event_by_hybrid
+
+        ], 200);
+    }
+
     public function event_detail(string $id)
     {
         // $get_event_detail = Event::find($id);
@@ -83,6 +114,61 @@ class EventController extends Controller
 
         return response()->json([
             'event_detail' => $event_detail,
+        ], 200);
+    }
+
+    public function event_percobaan(Request $request)
+    {
+        // Get Event By Kategori and Jenis
+        if ($request->kategori && $request->online) {
+            if ($request->online == "onsite") {
+                $get_event_by_kategori = Event::with('event_media')->where('kategori_id', $request->kategori)
+                    ->orWhere('kategori2_id', $request->kategori)
+                    ->orWhere('kategori3_id', $request->kategori)->get();
+                $get_event_by_onsite = $get_event_by_kategori->where('online', 0);
+                return response()->json([
+                    'get_event_by_onsite' => $get_event_by_onsite,
+                ], 200);
+            }
+            if ($request->online == "online") {
+                $get_event_by_kategori = Event::with('event_media')->where('kategori_id', $request->kategori)
+                    ->orWhere('kategori2_id', $request->kategori)
+                    ->orWhere('kategori3_id', $request->kategori)->get();
+                $get_event_by_online = $get_event_by_kategori->where('online', 1);
+                return response()->json([
+                    'get_event_by_online' => $get_event_by_online,
+                ], 200);
+            }
+            if ($request->online == "hybrid") {
+                $get_event_by_kategori = Event::with('event_media')->where('kategori_id', $request->kategori)
+                    ->orWhere('kategori2_id', $request->kategori)
+                    ->orWhere('kategori3_id', $request->kategori)->get();
+                $get_event_by_hybrid = $get_event_by_kategori->where('online', 2);
+                return response()->json([
+                    'get_event_by_hybrid' => $get_event_by_hybrid,
+                ], 200);
+            }
+            return response()->json([
+                'keterangan' => 'Pencarian tidak ditemukan',
+            ], 400);
+        }
+
+        // Get Event By Kategori
+        if ($request->kategori) {
+            $get_event_by_kategori = Event::with('event_media')->where('kategori_id', $request->kategori)
+                ->orWhere('kategori2_id', $request->kategori)
+                ->orWhere('kategori3_id', $request->kategori)
+                ->get();
+            return response()->json([
+                'get_event_by_kategori' => $get_event_by_kategori,
+            ], 200);
+        }
+
+        // Get All Event List
+        $events = Event::with('event_categorie', 'event_categorie2', 'event_categorie3')->get();
+
+        return response()->json([
+            'events' => $events,
         ], 200);
     }
 }
