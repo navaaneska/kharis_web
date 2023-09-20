@@ -28,7 +28,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/event_index', [EventController::class, 'index']);
-    Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -36,3 +35,4 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/event-categories', [EventCategorieController::class, 'index']);
 Route::get('event_kategori_by_jenis_kategori/{kategori}', [EventController::class, 'event_kategori_by_jenis_kategori']);
 Route::get('/event', [EventController::class, 'event_percobaan']);
+Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);
