@@ -120,6 +120,8 @@ class EventController extends Controller
     public function event_percobaan(Request $request)
     {
         // Get Event By Kategori and Jenis
+
+
         if ($request->kategori && $request->online) {
             if ($request->online == "onsite") {
                 $get_event_by_kategori = Event::with('event_media')->where('kategori_id', $request->kategori)
@@ -169,6 +171,39 @@ class EventController extends Controller
 
         return response()->json([
             'events' => $events,
+        ], 200);
+    }
+
+
+    public function EventList(Request $request)
+    {
+        $events = Event::with('event_media','event_categorie');
+
+        if (isset($request->kategori)) {
+            $kategori = $request->kategori;
+            $events->where(function ($q) use ($kategori) {
+                $q->where('kategori_id', $kategori)
+                    ->orWhere('kategori2_id', $kategori)
+                    ->orWhere('kategori3_id', $kategori);
+            });
+        }
+        if (isset($request->online)) {
+            switch ($request->online) {
+                case "online":
+                    $events->whereIn('online', [1,2]);
+                    break;
+                case "onsite":
+                    $events->where('online', [0,2]);
+                    break;
+                default: break;
+            }
+        }
+
+
+
+        return response()->json([
+            'success' => true,
+            'data' => $events->get(),
         ], 200);
     }
 }

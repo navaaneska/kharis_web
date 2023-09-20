@@ -35,4 +35,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/event-categories', [EventCategorieController::class, 'index']);
 Route::get('event_kategori_by_jenis_kategori/{kategori}', [EventController::class, 'event_kategori_by_jenis_kategori']);
-Route::get('/event', [EventController::class, 'event_percobaan']);
+
+
+Route::get('/event', [EventController::class, 'EventList']);
+Route::get('/event/kategori/{kategori}', [EventController::class, 'EventList']);
+Route::get('/event/kategori/{kategori}/online/{online}', [EventController::class, 'EventList']);
