@@ -22,8 +22,7 @@ jobs:
           script: 
             cd /var/www/html/app  && 
             git pull origin main && 
-            git status &&
-            php artisan cache:clear &&
+            git status && 
             chmod -R 775 /var/www/html/app/storage/logs/ &&
             chmod -R 775 /var/www/html/app/storage/framework/sessions/ 
 
