@@ -1,6 +1,6 @@
 <div class="d-flex">
     <a href="{{ route('events.show', ['event' => $event->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
-            class="bi-person-lines-fill"></i></a>
+            class="fa fa-eye"></i></a>
     <a href="{{ route('events.edit', ['event' => $event->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
             class="bi-pencil-square"></i></a>
 
@@ -14,7 +14,7 @@
         </form>
     </div>
 
-    <a href="{{ route('events-media.createNew', ['id' => $event->id]) }}"
+    {{-- <a href="{{ route('events-media.createNew', ['id' => $event->id]) }}"
         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        Create Media</a>
+        Create Media</a> --}}
 </div>

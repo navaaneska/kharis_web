@@ -15,13 +15,13 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-3" style="display: none">
                                 <label for="nama" class="form-label">Nama Events</label>
                                 <h6>{{ $event->nama }}</h6>
                                 <input type="text" name="nama" id="nama" value="{{ $event->id }}"
                                     style="display: none">
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="judul" class="form-label">judul</label>
                                 <input class="form-control  @error('judul') is-invalid @enderror" type="text"
                                     name="judul" id="judul" value="{{ old('judul') }}"
@@ -30,49 +30,7 @@
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="jenis" class="form-label">jenis</label>
-                                <select name="jenis" id="jenis" class="form-select">
-                                    @foreach ($categories as $categorie)
-                                        <option value="{{ $categorie }}"
-                                            {{ old('categorie') == $categorie ? 'selected' : '' }}>
-                                            {{ $categorie }}</option>
-                                    @endforeach
-                                </select>
-                                @error('jenis')
-                                    <div class="text-danger"><small>{{ $message }}</small></div>
-                                @enderror
-                            </div>
-                            <hr>
-                            <h6>jika memilih jenis image masukkan gambar</h6>
-                            <div class="col-md-12 mb-3">
-                                <label for="file" class="form-label">file</label>
-                                <input class="form-control  @error('file') is-invalid @enderror" type="file"
-                                    name="file" id="file" placeholder="Masukkan file media" />
-                                @error('file')
-                                    <div class="text-danger"><small>{{ $message }}</small></div>
-                                @enderror
-                            </div>
-                            <hr>
-                            <h6>jika memilih jenis spotify dan youtube masukkan link</h6>
-                            <div class="col-md-12 mb-3">
-                                <label for="link" class="form-label">link</label>
-                                <input class="form-control  @error('link') is-invalid @enderror" type="text"
-                                    name="link" id="link" value="{{ old('link') }}"
-                                    placeholder="Masukkan link spotify atau youtube" />
-                                @error('link')
-                                    <div class="text-danger"><small>{{ $message }}</small></div>
-                                @enderror
-                            </div>
-                            <hr>
-                            <div class="col-md-12 mb-3">
-                                <label for="deskripsi" class="form-label">deskripsi</label>
-                                <textarea class="form-control  @error('deskripsi') is-invalid @enderror" type="deskripsi" name="deskripsi"
-                                    id="deskripsi" placeholder="Masukkan deskripsi media"></textarea>
-                                @error('deskripsi')
-                                    <div class="text-danger"><small>{{ $message }}</small></div>
-                                @enderror
-                            </div>
+                            
                             <div class="col-md-6 mb-3">
                                 <label for="utama" class="form-label">Utama</label>
                                 <select name="utama" id="utama" class="form-select">
@@ -87,10 +45,48 @@
                                 @enderror
                             </div>
 
+                            <div class="col-md-6 mb-3">
+                                <label for="jenis" class="form-label">jenis</label>
+                                <select name="jenis" id="jenis" class="form-select">
+                                    @foreach ($categories as $categorie)
+                                        <option value="{{ $categorie }}"
+                                            {{ old('categorie') == $categorie ? 'selected' : '' }}>
+                                            {{ $categorie }}</option>
+                                    @endforeach
+                                </select>
+                                @error('jenis')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div> 
+
+                            <div class="col-md-6 mb-3">
+                                <label for="file" class="form-label">File / Url</label>
+                                <input class="form-control  @error('file') is-invalid @enderror" type="file"
+                                    name="file" id="file" placeholder="Masukkan file media" />
+                                @error('file')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                                
+                                <label for="link" class="form-label"> </label>
+                                <input class="form-control  @error('link') is-invalid @enderror" type="text"
+                                    name="link" id="link" value="{{ old('link') }}"
+                                    placeholder="Masukkan link spotify atau youtube" />
+                                @error('link')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div> 
+                            <div class="col-md-12 mb-3" style="display: none">
+                                <label for="deskripsi" class="form-label">deskripsi</label>
+                                <textarea class="form-control  @error('deskripsi') is-invalid @enderror" type="deskripsi" name="deskripsi"
+                                    id="deskripsi" placeholder="Masukkan deskripsi media">-</textarea>
+                                @error('deskripsi')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
+
                         </div>
 
-
-                        <hr>
+ 
                         <div class="row">
                             <div class="col-md-6 d-grid">
                                 <a href="{{ route('events.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i

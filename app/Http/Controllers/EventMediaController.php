@@ -131,7 +131,7 @@ class EventMediaController extends Controller
 
         $eventMedia->save();
 
-        return redirect()->route('events.index');
+        return redirect()->route('events.show', ['event' => $eventMedia->event_id]); 
     }
 
     /**
