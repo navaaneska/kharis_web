@@ -25,6 +25,12 @@ class Event extends Model
         return $this->belongsTo('App\Models\Event_Categorie', 'kategori2_id');
         // return $this->belongsTo('App\Models\Event_Categorie', 'kategori3_id');
     }
+    public function event_categorie3()
+    {
+        // return $this->belongsTo('App\Models\Event_Categorie', 'kategori_id');
+        // return $this->belongsTo('App\Models\Event_Categorie', 'kategori2_id');
+        return $this->belongsTo('App\Models\Event_Categorie', 'kategori3_id');
+    } 
 
     public function event_media()
     {
