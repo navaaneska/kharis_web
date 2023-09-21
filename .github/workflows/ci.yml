@@ -23,7 +23,9 @@ jobs:
             cd /var/www/html/app  && 
             git pull origin main && 
             git status && 
-            chmod -R 775 /var/www/html/app/storage/logs/ &&
-            chmod -R 775 /var/www/html/app/storage/framework/sessions/ 
+            chmod 775 /var/www/html/app/storage/logs/ &&
+            chmod 775 /var/www/html/app/storage/framework/view/
+            chmod 775 /var/www/html/app/storage/framework/sessions/
+            chmod 775 /var/www/html/app/storage/log/
 
 
