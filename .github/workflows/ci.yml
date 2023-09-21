@@ -23,4 +23,7 @@ jobs:
             cd /var/www/html/app  && 
             git pull origin main && 
             git status &&
-            chmod 777 /var/www/html/app/storage/logs/ -R
+            php artisan cache:clear && 
+            chmod 777 /var/www/html/app/storage/ -R &&
+            composer dump-autoload
+
