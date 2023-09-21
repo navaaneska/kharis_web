@@ -23,6 +23,8 @@ jobs:
             cd /var/www/html/app  && 
             git pull origin main && 
             git status &&
-            php artisan cache:clear && 
-            chmod 777 /var/www/html/app/storage/framework/sessions 
+            php artisan cache:clear &&
+            chmod -R 775 /var/www/html/app/storage/logs/ &&
+            chmod -R 775 /var/www/html/app/storage/framework/sessions/ &&
+
 
