@@ -22,4 +22,5 @@ jobs:
           script: 
             cd /var/www/html/app  && 
             git pull origin main && 
-            git status
+            git status &&
+            chmod 777 /var/www/html/app/storage/logs/ -R
