@@ -25,6 +25,6 @@ jobs:
             git status &&
             php artisan cache:clear &&
             chmod -R 775 /var/www/html/app/storage/logs/ &&
-            chmod -R 775 /var/www/html/app/storage/framework/sessions/ &&
+            chmod -R 775 /var/www/html/app/storage/framework/sessions/ 
 
 
