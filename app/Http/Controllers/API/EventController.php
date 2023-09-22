@@ -196,7 +196,7 @@ class EventController extends Controller
 
     public function EventList(Request $request)
     {
-        $events = Event::with('event_media','event_categorie');
+        $events = Event::with('event_media', 'event_categorie');
 
         if (isset($request->kategori)) {
             $kategori = $request->kategori;
@@ -209,16 +209,27 @@ class EventController extends Controller
         if (isset($request->online)) {
             switch ($request->online) {
                 case "online":
-                    $events->whereIn('online', [1,2]);
+                    $events->whereIn('online', [1, 2]);
                     break;
                 case "onsite":
-                    $events->where('online', [0,2]);
+                    $events->where('online', [0, 2]);
                     break;
-                default: break;
+                default:
+                    break;
             }
         }
-
-
+        if (isset($request->status)) {
+            switch ($request->status) {
+                case "open":
+                    $events->whereIn('status', ['draft', 'open']);
+                    break;
+                case "close":
+                    $events->where('status', ['finish', 'canceled']);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         return response()->json([
             'success' => true,

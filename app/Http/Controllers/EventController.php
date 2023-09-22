@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Event_Categorie;
 use App\Models\EventMedia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
@@ -48,7 +49,8 @@ class EventController extends Controller
 
         $messages = [
             'required' => ':Attribute harus diisi.',
-            'numeric' => 'Isi :attribute dengan angka'
+            'numeric' => 'Isi :attribute dengan angka',
+            'image' => ':Atribute diisi dengan format foto',
         ];
 
         $validator = Validator::make($request->all(), [
@@ -56,6 +58,7 @@ class EventController extends Controller
             'deskripsi' => 'required',
             'tanggal_mulai' => 'required',
             'tanggal_selesai' => 'required',
+            'lokasi' => 'required',
             'lat' => 'required|numeric',
             'lng' => 'required|numeric',
             'ketentuan' => 'required',
@@ -63,6 +66,7 @@ class EventController extends Controller
             'online' => 'required',
             'harga' => 'required',
             'maksimal_peserta' => 'required',
+            'featured_image' => 'required|image',
             'kategori_id' => 'required',
             'kategori2_id' => 'required',
             'kategori3_id' => 'required',
@@ -85,8 +89,15 @@ class EventController extends Controller
         } else {
             $event->kategori3_id = null;
         }
-        $event->nama = $request->nama;
+        // get Image
+        $image = $request->file('featured_image');
+        if ($image != null) {
+            $encryptFileNameImage = $image->hashName();
+            // image Store
+            $upload_image = $image->store('public/files/featured-image');
+        }
 
+        $event->nama = $request->nama;
         // Get Slug Name
         $title = $request->nama;
         $title_slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $title);
@@ -94,6 +105,7 @@ class EventController extends Controller
         $event->deskripsi = $request->deskripsi;
         $event->tanggal_mulai = $request->tanggal_mulai;
         $event->tanggal_selesai = $request->tanggal_selesai;
+        $event->lokasi = $request->lokasi;
         $event->lat = $request->lat;
         $event->lng = $request->lng;
         $event->ketentuan = $request->ketentuan;
@@ -108,11 +120,11 @@ class EventController extends Controller
         $event->harga = $request->harga;
         $event->maksimal_peserta = $request->maksimal_peserta;
         $event->qr = null;
+        if ($image != null && $upload_image) {
+            $event->featured_image = $encryptFileNameImage;
+        }
         $event->created_by = auth()->user()->id;
         $event->updated_by = auth()->user()->id;
-
-
-
         $event->save();
         return redirect()->route('events.index');
         // $data = $request->all();
@@ -169,6 +181,7 @@ class EventController extends Controller
             'deskripsi' => 'required',
             'tanggal_mulai' => 'required',
             'tanggal_selesai' => 'required',
+            'lokasi' => 'required',
             'lat' => 'required|numeric',
             'lng' => 'required|numeric',
             'ketentuan' => 'required',
@@ -197,7 +210,27 @@ class EventController extends Controller
         } else {
             $event->kategori3_id = null;
         }
+
+
+        // get Image
+        $image = $request->file('featured_image');
+
+        if ($image != null) {
+            $media = Event::find($id);
+            $media_delete = Storage::disk('public')->delete('files/featured-image/' . $media->featured_image);
+
+            if ($media_delete) {
+                $encryptFileNameImage = $image->hashName();
+                // image store
+                $upload_image = $image->store('public/files/featured-image');
+            }
+        }
+
         $event->nama = $request->nama;
+        // Get Slug Name
+        $title = $request->nama;
+        $title_slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $title);
+        $event->nama_slug = $title_slug;
         $event->deskripsi = $request->deskripsi;
         $event->tanggal_mulai = $request->tanggal_mulai;
         $event->tanggal_selesai = $request->tanggal_selesai;
@@ -214,6 +247,9 @@ class EventController extends Controller
         }
         $event->harga = $request->harga;
         $event->maksimal_peserta = $request->maksimal_peserta;
+        if ($image != null && $upload_image) {
+            $event->featured_image = $encryptFileNameImage;
+        }
         $event->qr = null;
         $event->created_by = auth()->user()->id;
         $event->updated_by = auth()->user()->id;

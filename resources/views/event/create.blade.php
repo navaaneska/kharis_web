@@ -28,7 +28,7 @@
                             <div class="col-md-12 mb-3">
                                 <label for="deskripsi" class="form-label">Deskripsi</label>
                                 <textarea class="form-control  @error('deskripsi') is-invalid @enderror" type="text" name="deskripsi" id="deskripsi"
-                                    value="{{ old('deskripsi') }}" placeholder="Masukkan Deskripsi Event"></textarea>
+                                    value="{{ old('deskripsi') }}" placeholder="Masukkan Deskripsi Event">{{ old('deskripsi') }}</textarea>
                                 @error('deskripsi')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
@@ -41,7 +41,6 @@
                                 @error('tanggal_mulai')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
-
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
@@ -51,12 +50,28 @@
                                 @error('tanggal_selesai')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
-
+                            </div>
+                            <div class="col-md-12 mb-5">
+                                <label for="featured_image" class="form-label">Image</label>
+                                <input class="form-control  @error('featured_image') is-invalid @enderror" type="file"
+                                    name="featured_image" id="featured_image" value="{{ old('featured_image') }}"
+                                    placeholder="Masukkan Deskripsi Event">
+                                @error('featured_image')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
                             </div>
                             <div class="col-md-12 mb-1">
                                 <h6>Lokasi :</h6>
                             </div>
                             <hr>
+                            <div class="col-md-12 mb-3">
+                                <label for="lokasi" class="form-label">Lokasi</label>
+                                <input class="form-control  @error('lokasi') is-invalid @enderror" type="text"
+                                    name="lokasi" id="lokasi" value="{{ old('lokasi') }}" placeholder="Enter alamat">
+                                @error('lokasi')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <label for="lat" class="form-label">Latitude</label>
                                 <input class="form-control  @error('lat') is-invalid @enderror" type="text"
@@ -76,9 +91,8 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="ketentuan" class="form-label">Ketentuan</label>
-                                <input class="form-control  @error('ketentuan') is-invalid @enderror" type="text"
-                                    name="ketentuan" id="ketentuan" value="{{ old('ketentuan') }}"
-                                    placeholder="Masukan Ketentuan">
+                                <textarea class="form-control  @error('ketentuan') is-invalid @enderror" type="text" name="ketentuan" id="ketentuan"
+                                    value="{{ old('ketentuan') }}" placeholder="Masukan Ketentuan">{{ old('ketentuan') }}</textarea>
                                 @error('ketentuan')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
@@ -127,7 +141,7 @@
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="kategori_id" class="form-label">Kategori Satu</label>
                                 <select name="kategori_id" id="kategori_id" class="form-select">
                                     @foreach ($categories as $categori)
@@ -140,7 +154,7 @@
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="kategori2_id" class="form-label">Kategori Dua</label>
                                 <select name="kategori2_id" id="kategori2_id" class="form-select">
                                     <option value=0>-</option>
@@ -154,7 +168,7 @@
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="kategori3_id" class="form-label">Kategori Tiga</label>
                                 <select name="kategori3_id" id="kategori3_id" class="form-select">
                                     <option value=0>-</option>
@@ -192,6 +206,11 @@
     <script>
         $('#deskripsi').summernote({
             placeholder: 'masukkan deskripsi',
+            tabsize: 2,
+            height: 100
+        });
+        $('#ketentuan').summernote({
+            placeholder: 'masukkan ketentuan',
             tabsize: 2,
             height: 100
         });
