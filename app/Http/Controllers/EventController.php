@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use App\Models\Event_Categorie;
+use App\Models\EventCategorie;
 use App\Models\EventMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +31,7 @@ class EventController extends Controller
     public function create()
     {
         $pageTitle = "Event";
-        $categories = Event_Categorie::all();
+        $categories = EventCategorie::all();
         $statuses = ['draft', 'open', 'finish', 'canceled'];
         $onlines = ['online', 'onsite', 'hybrid'];
 
@@ -152,7 +152,7 @@ class EventController extends Controller
         $pageTitle = "Event";
         $event = Event::find($id);
         $statuses = ['draft', 'open', 'finish', 'canceled'];
-        $categories = Event_Categorie::all();
+        $categories = EventCategorie::all();
         $onlines = ['online', 'onsite', 'hybrid'];
 
         if ($event->online == 0) {
