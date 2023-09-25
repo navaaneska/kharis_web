@@ -40,5 +40,6 @@ Route::get('event_kategori_by_jenis_kategori/{kategori}', [EventController::clas
 Route::get('/event', [EventController::class, 'EventList']);
 Route::get('/event/kategori/{kategori}', [EventController::class, 'EventList']);
 Route::get('/event/kategori/{kategori}/online/{online}', [EventController::class, 'EventList']);
- 
+Route::get('/event/kategori/{kategori}/status/{status}', [EventController::class, 'EventList']);
+
 Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);

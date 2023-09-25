@@ -40,12 +40,6 @@
             </tbody>
         </table>
     </div>
-    {{-- <iframe src="https://www.youtube.com/embed/QPCX24ToLHs?si=0ziJFwd_9rfyzN9k" frameborder="0"></iframe>
-    <iframe style="border-radius:12px"
-        src="https://open.spotify.com/embed/track/0qjuyXWrksQxIRntqz9ZJV?utm_source=generator" width="100%" height="352"
-        frameBorder="0" allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> --}}
-
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

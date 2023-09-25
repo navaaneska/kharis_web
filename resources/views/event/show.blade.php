@@ -9,17 +9,18 @@
         </div>
         <hr>
         <div class="row">
-            <div class="col-sm-3 mb-1">
-                <label for="nama" class="form-label font-weight-bold">Nama Events</label>
+            <div class="col-md-12 mb-3">
+                <label for="nama" class="form-label">Image</label><br>
+                <img src="{{ asset('storage/files/featured-image/' . $event->featured_image) }}" alt="{{ $event->judul }}"
+                    style="width:20%">
             </div>
-            <div class="col-sm-9 mb-1">
-                {{ $event->nama }}
+            <div class="col-md-12 mb-3">
+                <label for="nama" class="form-label">Nama Events</label>
+                <h5>{{ $event->nama }}</h5>
             </div>
-            <div class="col-sm-3 mb-1">
-                <label for="deskripsi" class="form-label font-weight-bold">Deskripsi Events</label>
-            </div>
-            <div class="col-sm-9 mb-1">
-                <div>{!! $event->deskripsi !!}</div>
+            <div class="col-md-12 mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi Events</label>
+                <h5>{!! $event->deskripsi !!}</h5>
             </div>
             <div class="col-sm-3 mb-1">
                 <label for="tanggal_mulai" class="form-label font-weight-bold">Tanggal Mulai</label>
@@ -39,47 +40,53 @@
             <div class="col-sm-9 mb-1">
                 {{ $event->lat }}
             </div>
-            <div class="col-sm-3 mb-1">
-                <label for="lng" class="form-label font-weight-bold">longitude</label>
+            <div class="col-md-12 mb-3">
+                <label for="lat" class="form-label">lokasi</label>
+                <h5>{{ $event->lokasi }}</h5>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="lat" class="form-label">latitude</label>
+                <h5>{{ $event->lat }}</h5>
             </div>
             <div class="col-sm-9 mb-1">
                 {{ $event->lng }}
             </div>
-            <div class="col-sm-3 mb-1">
-                <label for="ketentuan" class="form-label font-weight-bold">Ketentuan Events</label>
-            </div>
-            
-            <div class="col-sm-9 mb-1">
-                {{ $event->ketentuan }}
+            <div class="col-md-6 mb-3">
+                <label for="nama" class="form-label">Status Events</label>
+                <h5>{{ $event->status }}</h5>
             </div>
             <div class="col-sm-3 mb-1">
                 <label for="nama" class="form-label font-weight-bold">Status Events</label>
             </div>
-            <div class="col-sm-9 mb-1">
-                {{ $event->status }}
+            <div class="col-md-12 mb-3">
+                <label for="nama" class="form-label">Harga</label>
+                <h5>Rp.{{ $event->harga }}</h5>
             </div>
-            <div class="col-sm-3 mb-1">
-                <label for="nama" class="form-label font-weight-bold">Maksimal Peserta</label>
+            <div class="col-md-4 mb-3">
+                <label for="nama" class="form-label">Kategori 1</label>
+                <h5>{{ $event->event_categorie->nama }}</h5>
             </div>
-            <div class="col-sm-9 mb-1">
-                {{ $event->maksimal_peserta }}
+            <div class="col-md-4 mb-3">
+                <label for="nama" class="form-label">Kategori 2</label>
+                @if ($event->event_categorie2)
+                    <h5>{{ $event->event_categorie2->nama }}</h5>
+                @else
+                    <h5>-</h5>
+                @endif
             </div>
-            <div class="col-sm-3 mb-1">
-                <label for="nama" class="form-label font-weight-bold">Harga</label>
+            <div class="col-md-4 mb-3">
+                <label for="nama" class="form-label">Kategori3</label>
+                @if ($event->event_categorie3)
+                    <h5>{{ $event->event_categorie3->nama }}</h5>
+                @else
+                    <h5>-</h5>
+                @endif
             </div>
-            <div class="col-sm-9 mb-1">
-                <p>Rp.{{ $event->harga }}
+            <div class="col-md-12 mb-3">
+                <label for="ketentuan" class="form-label">Ketentuan Events</label>
+                <h5>{!! $event->ketentuan !!}</h5>
             </div>
-
-            <hr/>
-            <div class="row mb-1"> 
-                <div class="col-md-6"> 
-                    <a href="{{ route('events-media.createNew', ['id' => $event->id]) }}"
-                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                        <i class="fa fa-plus"></i> Create Media</a>
-                </div>
-                <br/>
-            </div>
+            <div> List Media</div>
             @foreach ($medias as $media)
                 <div class="col-md-4">
                     <div class="row">
