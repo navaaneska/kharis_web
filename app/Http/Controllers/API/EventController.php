@@ -196,7 +196,11 @@ class EventController extends Controller
 
     public function EventList(Request $request)
     {
-        $events = Event::with('event_media', 'event_categorie');
+
+        $events = Event::with('event_categorie')
+            ->with(['event_media' => function ($query) {
+                $query->where('utama', '=', '1')->take(1);
+            }]);
 
         if (isset($request->kategori)) {
             $kategori = $request->kategori;
