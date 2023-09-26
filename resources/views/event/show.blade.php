@@ -87,6 +87,10 @@
                 <h5>{!! $event->ketentuan !!}</h5>
             </div>
             <div> List Media</div>
+            <div class="row col-md-12 my-5 px-4"> 
+                <a href="{{ route('events-media.createNew', ['id' => $event->id]) }}"
+                    class="btn btn-primary "><i class="fa fa-plus"></i> &nbsp; Tambah Media</a>
+            </div>
             @foreach ($medias as $media)
                 <div class="col-md-4">
                     <div class="row">
