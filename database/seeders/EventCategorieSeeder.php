@@ -13,7 +13,7 @@ class EventCategorieSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('event__categories')->insert([
+        DB::table('event_categories')->insert([
             [
                 'nama' => 'kategori1',
                 'icon' => 'icon',

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event_Categorie;
+use App\Models\EventCategorie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -15,7 +15,7 @@ class EventCategorieController extends Controller
     public function index()
     {
         $pageTitle = "Kategori";
-        $categories = Event_Categorie::all();
+        $categories = EventCategorie::all();
 
         return view('event_categorie.index', compact('categories', 'pageTitle'));
     }
@@ -67,7 +67,7 @@ class EventCategorieController extends Controller
             $upload_image = $image->store('public/files/event-categorie');
         }
 
-        $eventCategorie = new Event_Categorie;
+        $eventCategorie = new EventCategorie;
         $eventCategorie->nama = $request->nama;
 
         if ($icon != null && $upload_icon) {
@@ -87,7 +87,7 @@ class EventCategorieController extends Controller
      */
     public function show(string $id)
     {
-        $kategori = Event_Categorie::find($id);
+        $kategori = EventCategorie::find($id);
         $pageTitle = "Kategori";
 
         return view('event_categorie.show', compact('kategori', 'pageTitle'));
@@ -98,7 +98,7 @@ class EventCategorieController extends Controller
      */
     public function edit(string $id)
     {
-        $kategori = Event_Categorie::find($id);
+        $kategori = EventCategorie::find($id);
         $pageTitle = "Kategori";
 
         return view('event_categorie.edit', compact('kategori', 'pageTitle'));
@@ -133,7 +133,7 @@ class EventCategorieController extends Controller
 
         if ($file_icon != null) {
 
-            $icon = Event_Categorie::find($id);
+            $icon = EventCategorie::find($id);
             $icon_delete = Storage::disk('public')->delete('files/event-categorie/' . $icon->icon);
 
             if ($icon_delete) {
@@ -144,7 +144,7 @@ class EventCategorieController extends Controller
         }
 
         if ($file_image != null) {
-            $image = Event_Categorie::find($id);
+            $image = EventCategorie::find($id);
             $image_delete = Storage::disk('public')->delete('files/event-categorie/' . $image->image);
 
             if ($image_delete) {
@@ -155,7 +155,7 @@ class EventCategorieController extends Controller
         }
 
 
-        $eventCategorie = Event_Categorie::find($id);
+        $eventCategorie = EventCategorie::find($id);
         $eventCategorie->nama = $request->nama;
 
         if ($file_icon != null && $icon_succes) {
@@ -174,7 +174,7 @@ class EventCategorieController extends Controller
      */
     public function destroy(string $id)
     {
-        $kategori = Event_Categorie::find($id);
+        $kategori = EventCategorie::find($id);
         $kategori_icon_delete = Storage::disk('public')->delete('files/event-categorie/' . $kategori->icon);
         $kategori_image_delete = Storage::disk('public')->delete('files/event-categorie/' . $kategori->image);
         if ($kategori_icon_delete && $kategori_image_delete) {

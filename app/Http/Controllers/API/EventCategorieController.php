@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Event_Categorie;
+use App\Models\EventCategorie;
 use Illuminate\Http\Request;
 
 class EventCategorieController extends Controller
@@ -13,7 +13,7 @@ class EventCategorieController extends Controller
      */
     public function index()
     {
-        $categories = Event_Categorie::all();
+        $categories = EventCategorie::all();
 
         return response()->json([
             'categories' => $categories,
