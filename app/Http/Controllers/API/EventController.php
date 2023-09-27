@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventCategorie;
+use App\Models\EventMedia;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -199,7 +200,8 @@ class EventController extends Controller
 
         $events = Event::with('event_categorie')
             ->with(['event_media' => function ($query) {
-                $query->where('utama', '=', '1')->take(1);
+                $query->where('utama', '=', '1');
+                // ->take(1)
             }]);
 
         if (isset($request->kategori)) {
@@ -235,9 +237,97 @@ class EventController extends Controller
             }
         }
 
+        if (isset($request->group)) {
+            switch ($request->group) {
+                case 'family':
+                    $group = [3, 9];
+                    $events->where(function ($q) use ($group) {
+                        $q->where('kategori_id', $group)
+                            ->orWhere('kategori2_id', $group)
+                            ->orWhere('kategori3_id', $group);
+                    });
+                    break;
+                case 'marriage':
+                    $group = [4, 5, 6];
+                    $events->where(function ($q) use ($group) {
+                        $q->where('kategori_id', $group)
+                            ->orWhere('kategori2_id', $group)
+                            ->orWhere('kategori3_id', $group);
+                    });
+                    break;
+                case 'wedding':
+                    $group = [7];
+                    $events->where(function ($q) use ($group) {
+                        $q->where('kategori_id', $group)
+                            ->orWhere('kategori2_id', $group)
+                            ->orWhere('kategori3_id', $group);
+                    });
+                    break;
+                case 'parents':
+                    $group = [8, 9];
+                    $events->where(function ($q) use ($group) {
+                        $q->where('kategori_id', $group)
+                            ->orWhere('kategori2_id', $group)
+                            ->orWhere('kategori3_id', $group);
+                    });
+                    break;
+                case 'youth-gen':
+                    $group = [8, 9];
+                    $events->where(function ($q) use ($group) {
+                        $q->where('kategori_id', $group)
+                            ->orWhere('kategori2_id', $group)
+                            ->orWhere('kategori3_id', $group);
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (isset($request->content)) {
+            switch ($request->content) {
+                case "youtube":
+                    $events = EventMedia::with('event')
+                        ->where('jenis', 'youtube')->latest()
+                        ->take($request->take);
+                    break;
+                case "spotify":
+                    $events = EventMedia::where('jenis', 'spotify')
+                        ->latest()
+                        ->take($request->take);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         return response()->json([
             'success' => true,
             'data' => $events->get(),
+        ], 200);
+    }
+
+    public function Streaming(Request $request)
+    {
+        $content = $request->content;
+
+        $events = Event::with('event_categorie')
+            ->with(['event_media' => function ($query) use ($content) {
+                $query->where('jenis', '=', $content);
+                // ->take(1);
+            }]);
+
+        if (isset($request->streaming)) {
+            $streaming = $request->streaming;
+            $events->where(function ($q) use ($streaming) {
+                $q->where('kategori_id', $streaming)
+                    ->orWhere('kategori2_id', $streaming)
+                    ->orWhere('kategori3_id', $streaming);
+            });
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $events->get()
         ], 200);
     }
 }
