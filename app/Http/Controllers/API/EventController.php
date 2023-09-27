@@ -324,10 +324,19 @@ class EventController extends Controller
                     ->orWhere('kategori3_id', $streaming);
             });
         }
-
         return response()->json([
             'success' => true,
             'data' => $events->get()
+        ], 200);
+    }
+
+    public function Media(Request $request)
+    {
+        $content = $request->content;
+        $medias = EventMedia::with('event')->where('jenis', $content)->get();
+        return response()->json([
+            'success' => true,
+            'data' => $medias
         ], 200);
     }
 }
