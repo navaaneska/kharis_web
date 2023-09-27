@@ -42,5 +42,9 @@ Route::get('/event/online/{online}', [EventController::class, 'EventList']);
 Route::get('/event/kategori/{kategori}', [EventController::class, 'EventList']);
 Route::get('/event/kategori/{kategori}/online/{online}', [EventController::class, 'EventList']);
 Route::get('/event/kategori/{kategori}/status/{status}', [EventController::class, 'EventList']);
+Route::get('/event/group/{group}', [EventController::class, 'EventList']);
+Route::get('/event/content/{content}/take/{take}', [EventController::class, 'EventList']);
+Route::get('/event/streaming/{streaming}/content/{content}', [EventController::class, 'Streaming']);
+Route::get('/media/content/{content}', [EventController::class, 'Media']);
 
 Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);
