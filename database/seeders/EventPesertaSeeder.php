@@ -13,7 +13,7 @@ class EventPesertaSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('event_peserta')->insert([
+        DB::table('event_pesertas')->insert([
             'event_id' => 1,
             'user_id' => 1,
             'created_by' => 1,
