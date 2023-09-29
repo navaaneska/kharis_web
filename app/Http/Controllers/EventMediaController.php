@@ -86,7 +86,8 @@ class EventMediaController extends Controller
         } elseif ($request->jenis == 'youtube') {
             // get Link Youtube
             $get_link_youtube = explode("/", $request->link);
-            $link_youtube = $get_link_youtube[3];
+            // $link_youtube = $get_link_youtube[3];
+            $link_youtube = end($get_link_youtube);
 
             // get thumbnail youtube
             $url = "https://www.youtube.com/live/" . $link_youtube;
@@ -217,7 +218,9 @@ class EventMediaController extends Controller
                 $media = EventMedia::find($id);
                 $media_delete = Storage::disk('public')->delete('files/event-media/' . $media->file);
                 $get_link_youtube = explode("/", $request->link);
-                $link_youtube = $get_link_youtube[3];
+                $link_youtube = end($get_link_youtube);
+                // $link_youtube = $get_link_youtube[3];
+
 
                 // get thumbnail youtube
                 $url = "https://www.youtube.com/live/" . $link_youtube;
@@ -239,7 +242,9 @@ class EventMediaController extends Controller
         } elseif ($request->jenis == 'youtube') {
             // get link youtube
             $get_link_youtube = explode("/", $request->link);
-            $link_youtube = $get_link_youtube[3];
+            // $link_youtube = $get_link_youtube[3];
+            $link_youtube = end($get_link_youtube);
+
 
             // get thumbnail youtube
             $url = "https://www.youtube.com/live/" . $link_youtube;
