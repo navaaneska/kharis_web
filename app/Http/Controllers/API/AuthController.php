@@ -33,6 +33,25 @@ class AuthController extends Controller
         ], 200);
     }
 
+    public function checkGoogleLogin(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'UNAUTHORIZED'
+            ], 401);
+        }
+
+        $token = $user->createToken('token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'success',
+            'user' => $user,
+            'token' => $token,
+        ], 200);
+    }
+
     public function logout(Request $request)
     {
         $user = $request->user();
@@ -68,10 +87,12 @@ class AuthController extends Controller
         $user->jenis_kelamin = $request->jenis_kelamin;
         $user->tanggal_lahir = $request->tanggal_lahir;
         $user->save();
+        $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
             'message'       => 'Data Customer Berhasil Ditambahkan',
             'user' => $user,
+            'token' => $token
         ], 200);
     }
 }

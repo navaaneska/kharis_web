@@ -10,39 +10,41 @@
                 class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     class="fas fa-download fa-sm text-white-50"></i> Create Kategori</a>
         </div>
-
-        <table id="myTable" class="table" style="width:100%">
-            <thead>
-                <tr>
-                    <td>Nama Kategori</td>
-                    <td>Icon</td>
-                    <td>Image</td>
-                    <td>actions</td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($categories as $categorie)
+        <div class="table-responsive">
+            <table id="myTable" class="table">
+                <thead>
                     <tr>
-                        <td>{{ $categorie->nama }}</td>
-                        @if (File::exists('storage/files/event-categorie/' . $categorie->icon))
-                            <td><img src="{{ asset('storage/files/event-categorie/' . $categorie->icon) }}"
-                                    style="width:30%">
-                            </td>
-                        @else
-                            <td>{{ $categorie->icon }}</td>
-                        @endif
-                        @if (File::exists('storage/files/event-categorie/' . $categorie->image))
-                            <td><img src="{{ asset('storage/files/event-categorie/' . $categorie->image) }}"
-                                    style="width:25%">
-                            </td>
-                        @else
-                            <td>{{ $categorie->image }}</td>
-                        @endif
-                        <td>@include('event_categorie.actions')</td>
+                        <td>Nama Kategori</td>
+                        <td>Icon</td>
+                        <td>Image</td>
+                        <td>actions</td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($categories as $categorie)
+                        <tr>
+                            <td>{{ $categorie->nama }}</td>
+                            @if (File::exists('storage/files/event-categorie/' . $categorie->icon))
+                                <td><img src="{{ asset('storage/files/event-categorie/' . $categorie->icon) }}"
+                                        style="width:80px">
+                                </td>
+                            @else
+                                <td>{{ $categorie->icon }}</td>
+                            @endif
+                            @if (File::exists('storage/files/event-categorie/' . $categorie->image))
+                                <td><img src="{{ asset('storage/files/event-categorie/' . $categorie->image) }}"
+                                        style="width:80px">
+                                </td>
+                            @else
+                                <td>{{ $categorie->image }}</td>
+                            @endif
+                            <td>@include('event_categorie.actions')</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"

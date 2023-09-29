@@ -15,6 +15,9 @@
     </div>
 
     <a href="{{ route('events-media.createNew', ['id' => $event->id]) }}"
-        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm me-2">
         Create Media</a>
+    <a href="{{ route('events-peserta.show', ['events_pesertum' => $event->id]) }}"
+        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm ">
+        Peserta</a>
 </div>
