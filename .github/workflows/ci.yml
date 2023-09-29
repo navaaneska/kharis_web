@@ -23,9 +23,9 @@ jobs:
             cd /var/www/html/app  && 
             git pull origin main && 
             git status && 
-            sudo chown www-data:www-data /var/www/html/app/storage/logs/ &&
-            sudo chown www-data:www-data /var/www/html/app/storage/framework/views/ &&
-            sudo chown www-data:www-data /var/www/html/app/storage/framework/sessions/ &&
-            sudo chown www-data:www-data /var/www/html/app/storage/logs/ 
+            sudo chown www-data:www-data /var/www/html/app/storage/logs/ -R &&
+            sudo chown www-data:www-data /var/www/html/app/storage/framework/views/ -R &&
+            sudo chown www-data:www-data /var/www/html/app/storage/framework/sessions/ -R &&
+            sudo chown www-data:www-data /var/www/html/app/storage/logs/ -R
 
 
