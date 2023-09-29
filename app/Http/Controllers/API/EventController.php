@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventCategorie;
 use App\Models\EventMedia;
+use App\Models\EventPeserta;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -215,10 +216,10 @@ class EventController extends Controller
         if (isset($request->online)) {
             switch ($request->online) {
                 case "online":
-                    $events->whereIn('online', [1, 2]);
+                    $events->whereIn('online', [0, 2]);
                     break;
                 case "onsite":
-                    $events->where('online', [0, 2]);
+                    $events->where('online', [1, 2]);
                     break;
                 default:
                     break;
@@ -230,13 +231,12 @@ class EventController extends Controller
                     $events->whereIn('status', ['draft', 'open']);
                     break;
                 case "close":
-                    $events->where('status', ['finish', 'canceled']);
+                    $events->whereIn('status', ['finish', 'canceled']);
                     break;
                 default:
                     break;
             }
         }
-
         if (isset($request->group)) {
             switch ($request->group) {
                 case 'family':
@@ -310,7 +310,7 @@ class EventController extends Controller
     {
         $content = $request->content;
 
-        $events = Event::with('event_categorie')
+        $events = Event::with('event_categorie', 'event_pengisi_acara')
             ->with(['event_media' => function ($query) use ($content) {
                 $query->where('jenis', '=', $content);
                 // ->take(1);
@@ -318,17 +318,40 @@ class EventController extends Controller
 
         if (isset($request->streaming)) {
             $streaming = $request->streaming;
-            $events->where(function ($q) use ($streaming) {
-                $q->where('kategori_id', $streaming)
-                    ->orWhere('kategori2_id', $streaming)
-                    ->orWhere('kategori3_id', $streaming);
-            });
+            if ($request->streaming != 0) {
+                $events->where(function ($q) use ($streaming) {
+                    $q->where('kategori_id', $streaming)
+                        ->orWhere('kategori2_id', $streaming)
+                        ->orWhere('kategori3_id', $streaming);
+                });
+            }
+        }
+        if (isset($request->upcoming)) {
+
+            $events = Event::with('event_categorie', 'event_pengisi_acara')
+                ->with(['event_media' => function ($query) use ($content) {
+                    $query->where('jenis', '=', $content)->orWhere('jenis', '=', 'image');
+                    // ->take(1);
+                }]);
+
+            $streaming = $request->streaming;
+            if ($request->streaming != 0) {
+                $events->where(function ($q) use ($streaming) {
+                    $q->where('kategori_id', $streaming)
+                        ->orWhere('kategori2_id', $streaming)
+                        ->orWhere('kategori3_id', $streaming);
+                });
+            }
+
+            $events->where('status', $request->upcoming);
         }
         return response()->json([
             'success' => true,
             'data' => $events->get()
         ], 200);
     }
+
+    // publi
 
     public function Media(Request $request)
     {
@@ -338,5 +361,44 @@ class EventController extends Controller
             'success' => true,
             'data' => $medias
         ], 200);
+    }
+
+    public function DaftarEvent(Request $request)
+    {
+        $event = EventPeserta::with('event', 'user');
+        $getEventId = $request->event_id;
+        $getUserId = $request->user_id;
+        $event->where(function ($q) use ($getEventId, $getUserId) {
+            $q->where('event_id', $getEventId)
+                ->where('user_id', $getUserId);
+        });
+        $checkEvent = $event->get();
+
+        if (count($checkEvent)) {
+            // Sudah Daftar
+            return response()->json([
+                'message'       => 'Sudah Mendaftar',
+            ], 200);
+        } else {
+            $getJumlahPendaftar = count(EventPeserta::where('event_id', $getEventId)->get());
+            $getMaksimalPeserta = Event::where('id', $getEventId)->get();
+            if ($getMaksimalPeserta[0]->maksimal_peserta > $getJumlahPendaftar) {
+                // Kuota Masih Ada
+                $daftarEvent = new EventPeserta;
+                $daftarEvent->event_id = $request->event_id;
+                $daftarEvent->user_id = $request->user_id;
+                $daftarEvent->created_by = $request->user_id;
+                $daftarEvent->save();
+                return response()->json([
+                    'message'       => 'Berhasil Daftar Event',
+                    'user' => $daftarEvent,
+                ], 200);
+            } else {
+                // Kuota Sudah Penuh
+                return response()->json([
+                    'message'       => 'Kuota Sudah Penuh',
+                ], 200);
+            }
+        }
     }
 }

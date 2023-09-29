@@ -10,35 +10,37 @@
                     class="fas fa-download fa-sm text-white-50"></i> Create Event</a>
         </div>
 
-        <table id="myTable" class="table">
-            <thead>
-                <tr>
-                    <td>nama</td>
-                    <td>deskripsi</td>
-                    <td>ketentuan</td>
-                    <td>status</td>
-                    <td>harga</td>
-                    <td>maksimal peserta</td>
-                    <td>
-                        actions
-                    </td>
-                </tr>
-
-            </thead>
-            <tbody>
-                @foreach ($events as $event)
+        <div class="table-responsive">
+            <table id="myTable" class="table">
+                <thead>
                     <tr>
-                        <td>{{ substr($event->nama, 0, 10) }}</td>
-                        <td>{{ substr($event->deskripsi, 0, 10) }}</td>
-                        <td>{{ $event->ketentuan }}</td>
-                        <td>{{ $event->status }}</td>
-                        <td>{{ $event->harga }}</td>
-                        <td>{{ $event->maksimal_peserta }}</td>
-                        <td>@include('event.actions')</td>
+                        <td>nama</td>
+                        <td>deskripsi</td>
+                        <td>ketentuan</td>
+                        <td>status</td>
+                        <td>harga</td>
+                        <td>maksimal peserta</td>
+                        <td>
+                            actions
+                        </td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+
+                </thead>
+                <tbody>
+                    @foreach ($events as $event)
+                        <tr>
+                            <td>{{ substr($event->nama, 0, 10) }}</td>
+                            <td>{{ substr($event->deskripsi, 0, 10) }}</td>
+                            <td>{{ $event->ketentuan }}</td>
+                            <td>{{ $event->status }}</td>
+                            <td>{{ $event->harga }}</td>
+                            <td>{{ $event->maksimal_peserta }}</td>
+                            <td>@include('event.actions')</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"

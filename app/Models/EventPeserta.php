@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event_Peserta extends Model
+class EventPeserta extends Model
 {
     use HasFactory;
 
@@ -16,7 +16,7 @@ class Event_Peserta extends Model
 
     public function user()
     {
-        return $this->belongsToMany(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
         return $this->belongsToMany(User::class, 'created_by');
     }
 }

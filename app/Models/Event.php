@@ -39,7 +39,7 @@ class Event extends Model
 
     public function event_peserta()
     {
-        return $this->hasMany(Event_Peserta::class);
+        return $this->hasMany(EventPeserta::class);
     }
 
     public function user()

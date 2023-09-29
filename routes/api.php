@@ -25,26 +25,35 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/logout', [AuthController::class, 'logout']);
 
     Route::get('/event_index', [EventController::class, 'index']);
     Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);
+
+    // EventCategories
+    Route::get('/event-categories', [EventCategorieController::class, 'index']);
+
+
+    // Event
+    Route::get('/event', [EventController::class, 'EventList']);
+    Route::get('/event/online/{online}', [EventController::class, 'EventList']);
+    Route::get('/event/kategori/{kategori}', [EventController::class, 'EventList']);
+    Route::get('/event/kategori/{kategori}/online/{online}', [EventController::class, 'EventList']);
+    Route::get('/event/kategori/{kategori}/status/{status}', [EventController::class, 'EventList']);
+    Route::get('/event/group/{group}', [EventController::class, 'EventList']);
+    Route::get('/event/content/{content}/take/{take}', [EventController::class, 'EventList']);
+    Route::get('/event/streaming/{streaming}/content/{content}', [EventController::class, 'Streaming']);
+    Route::get('/event/upcoming/{upcoming}/streaming/{streaming}/content/{content}', [EventController::class, 'Streaming']);
+    Route::get('/media/content/{content}', [EventController::class, 'Media']);
+    Route::post('/daftar-event', [EventController::class, 'DaftarEvent']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/checkGoogleLogin', [AuthController::class, 'checkGoogleLogin']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/event-categories', [EventCategorieController::class, 'index']);
 Route::get('event_kategori_by_jenis_kategori/{kategori}', [EventController::class, 'event_kategori_by_jenis_kategori']);
 
 
-Route::get('/event', [EventController::class, 'EventList']);
-Route::get('/event/online/{online}', [EventController::class, 'EventList']);
-Route::get('/event/kategori/{kategori}', [EventController::class, 'EventList']);
-Route::get('/event/kategori/{kategori}/online/{online}', [EventController::class, 'EventList']);
-Route::get('/event/kategori/{kategori}/status/{status}', [EventController::class, 'EventList']);
-Route::get('/event/group/{group}', [EventController::class, 'EventList']);
-Route::get('/event/content/{content}/take/{take}', [EventController::class, 'EventList']);
-Route::get('/event/streaming/{streaming}/content/{content}', [EventController::class, 'Streaming']);
-Route::get('/media/content/{content}', [EventController::class, 'Media']);
+
 
 Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);

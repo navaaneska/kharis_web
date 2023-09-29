@@ -3,6 +3,7 @@
 use App\Http\Controllers\EventCategorieController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventMediaController;
+use App\Http\Controllers\EventPesertaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,4 +38,5 @@ Route::middleware('auth')->group(function () {
     Route::get('events-media/create-new/{id}', [EventMediaController::class, 'createNew'])->name('events-media.createNew');
     Route::resource('events-media', EventMediaController::class);
     Route::resource('events-categorie', EventCategorieController::class);
+    Route::resource('events-peserta', EventPesertaController::class);
 });
