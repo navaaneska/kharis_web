@@ -29,9 +29,9 @@
                 <tbody>
                     @foreach ($events as $event)
                         <tr>
-                            <td>{{ substr($event->nama, 0, 10) }}</td>
+                            <td>{{ substr($event->nama, 0, 30) }}</td>
                             <td>{{ substr($event->deskripsi, 0, 10) }}</td>
-                            <td>{{ $event->ketentuan }}</td>
+                            <td>{{ substr($event->ketentuan, 0, 10) }}</td>
                             <td>{{ $event->status }}</td>
                             <td>{{ $event->harga }}</td>
                             <td>{{ $event->maksimal_peserta }}</td>
