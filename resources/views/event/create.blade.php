@@ -72,10 +72,20 @@
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
                             </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="link_maps" class="form-label">Link Google Maps</label>
+                                <input class="form-control  @error('link_maps') is-invalid @enderror" type="text"
+                                    name="link_maps" id="link_maps" value="{{ old('link_maps') }}"
+                                    placeholder="Enter Link Google Maps" onkeyup="blala()">
+                                @error('link_maps')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <label for="lat" class="form-label">Latitude</label>
                                 <input class="form-control  @error('lat') is-invalid @enderror" type="text"
-                                    name="lat" id="lat" value="{{ old('lat') }}" placeholder="Enter Latitude">
+                                    name="lat" id="lat" value="{{ old('lat') }}"
+                                    placeholder="Enter longitude">
                                 @error('lat')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
@@ -91,8 +101,8 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="ketentuan" class="form-label">Ketentuan</label>
-                                <textarea class="form-control  @error('ketentuan') is-invalid @enderror" type="text" name="ketentuan" id="ketentuan"
-                                    value="{{ old('ketentuan') }}" placeholder="Masukan Ketentuan">{{ old('ketentuan') }}</textarea>
+                                <textarea class="form-control  @error('ketentuan') is-invalid @enderror" type="text" name="ketentuan"
+                                    id="ketentuan" value="{{ old('ketentuan') }}" placeholder="Masukan Ketentuan">{{ old('ketentuan') }}</textarea>
                                 @error('ketentuan')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
@@ -213,6 +223,18 @@
             placeholder: 'masukkan ketentuan',
             tabsize: 2,
             height: 100
+        });
+        $('#link_maps').keyup(function() {
+            var url = $('#link_maps').val();
+            var get_data = url.split("@");
+            var get_ll = get_data[1].split(',');
+            var latitude = get_ll[0];
+            var longitude = get_ll[1];
+
+            $('#lat').val(latitude);
+            $('#lng').val(longitude);
+
+            console.log(latitude, longitude)
         });
     </script>
 @endsection

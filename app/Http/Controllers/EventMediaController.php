@@ -62,7 +62,7 @@ class EventMediaController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'judul' => 'required',
-            // 'file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'file' => 'required|image|mimes:jpeg,png,jpg|max:20000',
             'jenis' => 'required',
             'deskripsi' => 'required',
             'utama' => 'required',

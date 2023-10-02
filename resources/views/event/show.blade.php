@@ -34,14 +34,20 @@
                 <label for="lat" class="form-label">lokasi</label>
                 <h5>{{ $event->lokasi }}</h5>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
+                <label for="lat" class="form-label">Tampilan Maps</label>
+                <iframe width="100%" height="300" frameborder="10" scrolling="no" marginheight="0" marginwidth="0"
+                    src="https://www.google.com/maps?q={{ $event->lat }},
+                {{ $event->lng }}&hl=es;z=14&output=embed"></iframe>
+            </div>
+            {{-- <div class="col-md-6 mb-3">
                 <label for="lat" class="form-label">latitude</label>
                 <h5>{{ $event->lat }}</h5>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="lng" class="form-label">longitude</label>
                 <h5>{{ $event->lng }}</h5>
-            </div>
+            </div> --}}
             <div class="col-md-6 mb-3">
                 <label for="nama" class="form-label">Status Events</label>
                 <h5>{{ $event->status }}</h5>

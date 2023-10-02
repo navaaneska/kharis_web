@@ -66,7 +66,7 @@ class EventController extends Controller
             'online' => 'required',
             'harga' => 'required',
             'maksimal_peserta' => 'required',
-            'featured_image' => 'required|image',
+            'featured_image' => 'required|image|max:20000',
             'kategori_id' => 'required',
             'kategori2_id' => 'required',
             'kategori3_id' => 'required',
@@ -96,6 +96,8 @@ class EventController extends Controller
             // image Store
             $upload_image = $image->store('public/files/featured-image');
         }
+
+
 
         $event->nama = $request->nama;
         // Get Slug Name
@@ -189,6 +191,7 @@ class EventController extends Controller
             'online' => 'required',
             'harga' => 'required',
             'maksimal_peserta' => 'required',
+            'featured_image' => 'image|max:20000',
             'kategori_id' => 'required',
             'kategori2_id' => 'required',
             'kategori3_id' => 'required',
