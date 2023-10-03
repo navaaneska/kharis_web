@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\EventCategorieController;
 use App\Http\Controllers\API\EventController;
+use App\Http\Controllers\API\EventPesertaPresensiController;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -52,8 +53,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/checkGoogleLogin', [AuthController::class, 'checkGoogleLogin']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('event_kategori_by_jenis_kategori/{kategori}', [EventController::class, 'event_kategori_by_jenis_kategori']);
+Route::post('create-peserta-presensi', [EventPesertaPresensiController::class, 'store']);
 
 
 
 
-Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);
+// Route::get('/event-detail/{id}', [EventController::class, 'event_detail']);

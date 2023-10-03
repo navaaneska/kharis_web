@@ -4,6 +4,8 @@ use App\Http\Controllers\EventCategorieController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventMediaController;
 use App\Http\Controllers\EventPesertaController;
+use App\Http\Controllers\EventPesertaPresensiController;
+use App\Http\Controllers\EventQrCodeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +20,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+// Route::get('/', function () {
+//     // return view('auth.login');
+//     return view('index');
+// });
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 
 // Route::get('/index', [EventController::class, 'index']);
@@ -39,4 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('events-media', EventMediaController::class);
     Route::resource('events-categorie', EventCategorieController::class);
     Route::resource('events-peserta', EventPesertaController::class);
+    Route::resource('events-qrcode', EventQrCodeController::class);
+    Route::get('events-qrcode/create-new/{id}', [EventQrCodeController::class, 'createNew'])->name('events-qrcode.createNew');
+    Route::resource('events-peserta-presensi', EventPesertaPresensiController::class);
 });

@@ -59,4 +59,9 @@ class User extends Authenticatable
         return $this->hasMany(Event_Pesertat::class, 'user_id');
         return $this->hasMany(Event_Peserta::class, 'created_by');
     }
+
+    public function event_peserta_presensi()
+    {
+        return $this->hasMany(PesertaPresensi::class, 'user_id');
+    }
 }

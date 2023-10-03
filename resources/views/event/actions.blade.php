@@ -1,6 +1,6 @@
 <div class="d-flex">
     <a href="{{ route('events.show', ['event' => $event->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
-            class="bi-person-lines-fill"></i></a>
+            class="fa fa-eye"></i></a>
     <a href="{{ route('events.edit', ['event' => $event->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
             class="bi-pencil-square"></i></a>
 
@@ -18,6 +18,9 @@
         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm me-2">
         Create Media</a>
     <a href="{{ route('events-peserta.show', ['events_pesertum' => $event->id]) }}"
-        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm ">
+        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm me-2 ">
         Peserta</a>
+    <a href="{{ route('events-qrcode.show', ['events_qrcode' => $event->id]) }}"
+        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm ">
+        Presensi</a>
 </div>

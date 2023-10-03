@@ -52,4 +52,9 @@ class Event extends Model
     {
         return $this->hasMany(EventPengisiAcara::class, 'event_id');
     }
+
+    public function event_qrcode()
+    {
+        return $this->hasMany('App\Models\Event', 'event_id');
+    }
 }
