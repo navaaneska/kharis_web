@@ -152,6 +152,19 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
+                                <label for="tipe_peserta" class="form-label">Tipe Event</label>
+                                <select name="tipe_peserta" id="tipe_peserta" class="form-select">
+                                    @foreach ($tipePesertas as $tipePeserta)
+                                        <option value="{{ $tipePeserta }}"
+                                            {{ old('tipe_peserta') == $tipePeserta ? 'selected' : '' }}>
+                                            {{ $tipePeserta }}</option>
+                                    @endforeach
+                                </select>
+                                @error('status')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <label for="kategori_id" class="form-label">Kategori Satu</label>
                                 <select name="kategori_id" id="kategori_id" class="form-select">
                                     @foreach ($categories as $categori)

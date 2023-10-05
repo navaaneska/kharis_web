@@ -8,6 +8,8 @@ use App\Models\EventMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 
 class EventController extends Controller
 {
@@ -34,11 +36,12 @@ class EventController extends Controller
         $categories = EventCategorie::all();
         $statuses = ['draft', 'open', 'finish', 'canceled'];
         $onlines = ['online', 'onsite', 'hybrid'];
+        $tipePesertas = ['personal', 'pasangan', 'keluarga'];
 
 
         // dd($status);
 
-        return view('event.create', compact('categories', 'statuses', 'pageTitle', 'onlines'));
+        return view('event.create', compact('categories', 'statuses', 'pageTitle', 'onlines', 'tipePesertas'));
     }
 
     /**
@@ -46,7 +49,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-
         $messages = [
             'required' => ':Attribute harus diisi.',
             'numeric' => 'Isi :attribute dengan angka',
@@ -67,6 +69,7 @@ class EventController extends Controller
             'harga' => 'required',
             'maksimal_peserta' => 'required',
             'featured_image' => 'required|image|max:20000',
+            'tipe_peserta' => 'required',
             'kategori_id' => 'required',
             'kategori2_id' => 'required',
             'kategori3_id' => 'required',
@@ -97,8 +100,6 @@ class EventController extends Controller
             $upload_image = $image->store('public/files/featured-image');
         }
 
-
-
         $event->nama = $request->nama;
         // Get Slug Name
         $title = $request->nama;
@@ -121,9 +122,16 @@ class EventController extends Controller
         }
         $event->harga = $request->harga;
         $event->maksimal_peserta = $request->maksimal_peserta;
-        $event->qr = null;
+        $event->qr = Str::random(40);
         if ($image != null && $upload_image) {
             $event->featured_image = $encryptFileNameImage;
+        }
+        if ($request->tipe_peserta == 'personal') {
+            $event->tipe_peserta = 0;
+        } elseif ($request->tipe_peserta == 'pasangan') {
+            $event->tipe_peserta = 1;
+        } else {
+            $event->tipe_peserta = 2;
         }
         $event->created_by = auth()->user()->id;
         $event->updated_by = auth()->user()->id;
@@ -156,6 +164,7 @@ class EventController extends Controller
         $statuses = ['draft', 'open', 'finish', 'canceled'];
         $categories = EventCategorie::all();
         $onlines = ['online', 'onsite', 'hybrid'];
+        $tipePesertas = ['personal', 'pasangan', 'keluarga'];
 
         if ($event->online == 0) {
             $getOnline = 'online';
@@ -165,7 +174,15 @@ class EventController extends Controller
             $getOnline = 'hybrid';
         }
 
-        return view('event.edit', compact('event', 'statuses', 'categories', 'pageTitle', 'onlines', 'getOnline'));
+        if ($event->tipe_peserta == 0) {
+            $getTipePeserta = 'personal';
+        } elseif ($event->tipe_peserta == 1) {
+            $getTipePeserta = 'pasangan';
+        } else {
+            $getTipePeserta = 'keluarga';
+        }
+
+        return view('event.edit', compact('event', 'statuses', 'categories', 'pageTitle', 'onlines', 'getOnline', 'tipePesertas', 'getTipePeserta'));
     }
 
     /**
@@ -192,6 +209,7 @@ class EventController extends Controller
             'harga' => 'required',
             'maksimal_peserta' => 'required',
             'featured_image' => 'image|max:20000',
+            'tipe_peserta' => 'required',
             'kategori_id' => 'required',
             'kategori2_id' => 'required',
             'kategori3_id' => 'required',
@@ -253,7 +271,13 @@ class EventController extends Controller
         if ($image != null && $upload_image) {
             $event->featured_image = $encryptFileNameImage;
         }
-        $event->qr = null;
+        if ($request->tipe_peserta == 'personal') {
+            $event->tipe_peserta = 0;
+        } elseif ($request->tipe_peserta == 'pasangan') {
+            $event->tipe_peserta = 1;
+        } else {
+            $event->tipe_peserta = 2;
+        }
         $event->created_by = auth()->user()->id;
         $event->updated_by = auth()->user()->id;
 

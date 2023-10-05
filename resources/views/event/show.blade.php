@@ -50,20 +50,23 @@
                     src="https://www.google.com/maps?q={{ $event->lat }},
                 {{ $event->lng }}&hl=es;z=14&output=embed"></iframe>
             </div>
-            {{-- <div class="col-md-6 mb-3">
-                <label for="lat" class="form-label">latitude</label>
-                <h5>{{ $event->lat }}</h5>
-            </div> --}}
             <div class="col-md-6 mb-3">
                 <label for="nama" class="form-label">Status Events</label>
                 <h5>{{ $event->status }}</h5>
             </div>
-            <div class="col-sm-3 mb-1">
-                <label for="nama" class="form-label font-weight-bold">Status Events</label>
-            </div>
-            <div class="col-md-12 mb-3">
+            <div class="col-md-6 mb-3">
                 <label for="nama" class="form-label">Harga</label>
                 <h5>Rp.{{ $event->harga }}</h5>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="nama" class="form-label">Tipe Peserta</label>
+                @if ($event->tipe_peserta == 0)
+                    <h5>personal</h5>
+                @elseif ($event->tipe_peserta == 1)
+                    <h5>pasangan</h5>
+                @else
+                    <h5>keluarga</h5>
+                @endif
             </div>
             <div class="col-md-4 mb-3">
                 <label for="nama" class="form-label">Kategori 1</label>

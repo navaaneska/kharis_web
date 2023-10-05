@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\EventCategorie;
 use App\Models\EventMedia;
 use App\Models\EventPeserta;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -374,30 +375,112 @@ class EventController extends Controller
         });
         $checkEvent = $event->get();
 
+
         if (count($checkEvent)) {
+
             // Sudah Daftar
             return response()->json([
                 'message'       => 'Sudah Mendaftar',
             ], 200);
         } else {
             $getJumlahPendaftar = count(EventPeserta::where('event_id', $getEventId)->get());
-            $getMaksimalPeserta = Event::where('id', $getEventId)->get();
-            if ($getMaksimalPeserta[0]->maksimal_peserta > $getJumlahPendaftar) {
-                // Kuota Masih Ada
-                $daftarEvent = new EventPeserta;
-                $daftarEvent->event_id = $request->event_id;
-                $daftarEvent->user_id = $request->user_id;
-                $daftarEvent->created_by = $request->user_id;
-                $daftarEvent->save();
-                return response()->json([
-                    'message'       => 'Berhasil Daftar Event',
-                    'user' => $daftarEvent,
-                ], 200);
+            $getInfoEvent = Event::where('id', $getEventId)->first();
+            $getInfoUser = User::find($request->user_id);
+
+            if ($getInfoEvent->tipe_peserta == 0) {
+
+                if ($getInfoEvent->maksimal_peserta > $getJumlahPendaftar) {
+                    // Kuota Masih Ada
+                    $daftarEvent = new EventPeserta;
+                    $daftarEvent->event_id = $request->event_id;
+                    $daftarEvent->user_id = $request->user_id;
+                    $daftarEvent->created_by = $request->user_id;
+                    $daftarEvent->save();
+                    return response()->json([
+                        'message'       => 'Berhasil Daftar Event',
+                        'user' => $daftarEvent,
+                    ], 200);
+                } else {
+                    // Kuota Sudah Penuh
+                    return response()->json([
+                        'message'       => 'Kuota Sudah Penuh',
+                    ], 200);
+                }
+            } elseif ($getInfoEvent->tipe_peserta == 1) {
+
+                // Validasi Pasangan
+                if ($getInfoUser->pasangan_id_approval == 1) {
+                    if ($getInfoEvent->maksimal_peserta > $getJumlahPendaftar) {
+
+                        // Kuota Masih Ada
+                        $daftarEvent = new EventPeserta;
+                        $daftarEvent->event_id = $request->event_id;
+                        $daftarEvent->user_id = $request->user_id;
+                        $daftarEvent->pasangan_id = $getInfoUser->pasangan_id;
+                        $daftarEvent->created_by = $request->user_id;
+                        $daftarEvent->save();
+                        return response()->json([
+                            'message'       => 'Berhasil Daftar Event',
+                            'user' => $daftarEvent,
+                        ], 200);
+                    } else {
+                        // Kuota Sudah Penuh
+                        return response()->json([
+                            'message'       => 'Kuota Sudah Penuh',
+                        ], 200);
+                    }
+                } else {
+                    // Kuota Sudah Penuh
+                    return response()->json([
+                        'message'       => 'Anda masih belum memiliki approval pasangan',
+                    ], 200);
+                }
             } else {
-                // Kuota Sudah Penuh
-                return response()->json([
-                    'message'       => 'Kuota Sudah Penuh',
-                ], 200);
+
+                // Validasi Keluarga
+                if ($getInfoUser->ayah_id_approval == 1 && $getInfoUser->ibu_id_approval == 1) {
+                    if ($getInfoEvent->maksimal_peserta > $getJumlahPendaftar) {
+
+                        // Kuota Masih Ada
+
+                        // Daftar Anak
+                        $daftarEvent = new EventPeserta;
+                        $daftarEvent->event_id = $request->event_id;
+                        $daftarEvent->user_id = $request->user_id;
+                        $daftarEvent->created_by = $request->user_id;
+
+                        // Daftar Ayah
+                        $daftarEventAyah = new EventPeserta;
+                        $daftarEventAyah->event_id = $request->event_id;
+                        $daftarEventAyah->user_id = $getInfoUser->ayah_id;
+                        $daftarEventAyah->created_by = $request->user_id;
+
+                        // Daftar Ibu
+                        $daftarEventIbu = new EventPeserta;
+                        $daftarEventIbu->event_id = $request->event_id;
+                        $daftarEventIbu->user_id = $getInfoUser->ibu_id;
+                        $daftarEventIbu->created_by = $request->user_id;
+
+                        $daftarEvent->save();
+                        $daftarEventAyah->save();
+                        $daftarEventIbu->save();
+
+                        return response()->json([
+                            'message'       => 'Berhasil Daftar Event',
+                            'user' => $daftarEvent,
+                        ], 200);
+                    } else {
+                        // Kuota Sudah Penuh
+                        return response()->json([
+                            'message'       => 'Kuota Sudah Penuh',
+                        ], 200);
+                    }
+                } else {
+                    // Kuota Sudah Penuh
+                    return response()->json([
+                        'message'       => 'Anda masih belum memiliki approval keluarga',
+                    ], 200);
+                }
             }
         }
     }
