@@ -152,6 +152,33 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
+                                <label for="harga_perevent" class="form-label">Harga Perevent</label>
+                                <input class="form-control  @error('harga_perevent') is-invalid @enderror" type="number"
+                                    name="harga_perevent" id="harga_perevent" value="{{ old('harga_perevent') }}"
+                                    placeholder="Maksimal Peserta">
+                                @error('harga_perevent')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="harga_perorang" class="form-label">Harga Perorang</label>
+                                <input class="form-control  @error('harga_perorang') is-invalid @enderror" type="number"
+                                    name="harga_perorang" id="harga_perorang" value="{{ old('harga_perorang') }}"
+                                    placeholder="Maksimal Peserta">
+                                @error('harga_perorang')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="harga_peranak" class="form-label">Harga Peranak</label>
+                                <input class="form-control  @error('harga_peranak') is-invalid @enderror" type="number"
+                                    name="harga_peranak" id="harga_peranak" value="{{ old('harga_peranak') }}"
+                                    placeholder="Maksimal Peserta">
+                                @error('harga_peranak')
+                                    <div class="text-danger"><small>{{ $message }}</small></div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <label for="tipe_peserta" class="form-label">Tipe Event</label>
                                 <select name="tipe_peserta" id="tipe_peserta" class="form-select">
                                     @foreach ($tipePesertas as $tipePeserta)

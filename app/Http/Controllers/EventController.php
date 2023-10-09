@@ -68,6 +68,9 @@ class EventController extends Controller
             'online' => 'required',
             'harga' => 'required',
             'maksimal_peserta' => 'required',
+            'harga_perevent' => 'required',
+            'harga_perorang' => 'required',
+            'harga_peranak' => 'required',
             'featured_image' => 'required|image|max:20000',
             'tipe_peserta' => 'required',
             'kategori_id' => 'required',
@@ -122,6 +125,9 @@ class EventController extends Controller
         }
         $event->harga = $request->harga;
         $event->maksimal_peserta = $request->maksimal_peserta;
+        $event->harga_perevent = $request->harga_perevent;
+        $event->harga_perorang = $request->harga_perorang;
+        $event->harga_anak = $request->harga_peranak;
         $event->qr = Str::random(40);
         if ($image != null && $upload_image) {
             $event->featured_image = $encryptFileNameImage;
@@ -208,6 +214,9 @@ class EventController extends Controller
             'online' => 'required',
             'harga' => 'required',
             'maksimal_peserta' => 'required',
+            'harga_perevent' => 'required',
+            'harga_perorang' => 'required',
+            'harga_peranak' => 'required',
             'featured_image' => 'image|max:20000',
             'tipe_peserta' => 'required',
             'kategori_id' => 'required',
@@ -268,6 +277,9 @@ class EventController extends Controller
         }
         $event->harga = $request->harga;
         $event->maksimal_peserta = $request->maksimal_peserta;
+        $event->harga_perevent = $request->harga_perevent;
+        $event->harga_perorang = $request->harga_perorang;
+        $event->harga_anak = $request->harga_peranak;
         if ($image != null && $upload_image) {
             $event->featured_image = $encryptFileNameImage;
         }

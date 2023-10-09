@@ -58,6 +58,22 @@
                 <label for="nama" class="form-label">Harga</label>
                 <h5>Rp.{{ $event->harga }}</h5>
             </div>
+            <div class="col-md-6 mb-3">
+                <label for="peserta" class="form-label">Peserta</label>
+                <h5>Rp.{{ $event->maksimal_peserta }}</h5>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="harga_perevent" class="form-label">Harga Perevent</label>
+                <h5>Rp.{{ $event->harga_perevent }}</h5>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="harga_perorang" class="form-label">Harga Perorang</label>
+                <h5>Rp.{{ $event->harga_perorang }}</h5>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="harga_peranak" class="form-label">Harga Peranak</label>
+                <h5>Rp.{{ $event->harga_anak }}</h5>
+            </div>
             <div class="col-md-12 mb-3">
                 <label for="nama" class="form-label">Tipe Peserta</label>
                 @if ($event->tipe_peserta == 0)

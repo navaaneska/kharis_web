@@ -391,10 +391,16 @@ class EventController extends Controller
 
                 if ($getInfoEvent->maksimal_peserta > $getJumlahPendaftar) {
                     // Kuota Masih Ada
+                    // dd($request->umur);
                     $daftarEvent = new EventPeserta;
                     $daftarEvent->event_id = $request->event_id;
                     $daftarEvent->user_id = $request->user_id;
-                    $daftarEvent->created_by = $request->user_id;
+                    $daftarEvent->created_by = $request->created_by;
+                    if ($request->umur < 12) {
+                        $daftarEvent->harga = $getInfoEvent->harga_anak;
+                    } else {
+                        $daftarEvent->harga = $getInfoEvent->harga_perorang;
+                    }
                     $daftarEvent->save();
                     return response()->json([
                         'message'       => 'Berhasil Daftar Event',
@@ -417,7 +423,8 @@ class EventController extends Controller
                         $daftarEvent->event_id = $request->event_id;
                         $daftarEvent->user_id = $request->user_id;
                         $daftarEvent->pasangan_id = $getInfoUser->pasangan_id;
-                        $daftarEvent->created_by = $request->user_id;
+                        $daftarEvent->created_by = $request->created_by;
+                        $daftarEvent->harga = $getInfoEvent->harga_perevent;
                         $daftarEvent->save();
                         return response()->json([
                             'message'       => 'Berhasil Daftar Event',
@@ -447,7 +454,13 @@ class EventController extends Controller
                     $daftarEvent = new EventPeserta;
                     $daftarEvent->event_id = $request->event_id;
                     $daftarEvent->user_id = $request->user_id;
-                    $daftarEvent->created_by = $request->user_id;
+                    $daftarEvent->created_by = $request->created_by;
+                    if ($request->user_id == $request->created_by) {
+                        $daftarEvent->harga = $getInfoEvent->harga_perevent;
+                    } else {
+                        $daftarEvent->harga = 0;
+                    }
+
 
                     // Daftar Ayah
                     // $daftarEventAyah = new EventPeserta;
