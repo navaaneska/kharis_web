@@ -56,12 +56,40 @@ class User extends Authenticatable
 
     public function event_peserta()
     {
-        return $this->hasMany(Event_Pesertat::class, 'user_id');
-        return $this->hasMany(Event_Peserta::class, 'created_by');
+        return $this->hasMany(EventPeserta::class, 'user_id');
+        return $this->hasMany(EventPeserta::class, 'created_by');
     }
 
     public function event_peserta_presensi()
     {
-        return $this->hasMany(PesertaPresensi::class, 'user_id');
+        return $this->hasMany(EventPesertaPresensi::class, 'user_id');
+    }
+
+    // Keluarga
+
+    public function ayah_id()
+    {
+        return $this->hasMany(User::class, 'ayah_id');
+    }
+    public function ibu_id()
+    {
+        return $this->hasMany(User::class, 'ibu_id');
+    }
+    public function pasangan_id()
+    {
+        return $this->hasMany(User::class, 'pasangan_id');
+    }
+
+    public function ayah()
+    {
+        return $this->belongsTo(User::class, 'ayah_id');
+    }
+    public function ibu()
+    {
+        return $this->belongsTo(User::class, 'ibu_id');
+    }
+    public function pasangan()
+    {
+        return $this->belongsTo(User::class, 'pasangan_id');
     }
 }

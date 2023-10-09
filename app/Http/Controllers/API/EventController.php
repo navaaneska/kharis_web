@@ -438,49 +438,50 @@ class EventController extends Controller
             } else {
 
                 // Validasi Keluarga
-                if ($getInfoUser->ayah_id_approval == 1 && $getInfoUser->ibu_id_approval == 1) {
-                    if ($getInfoEvent->maksimal_peserta > $getJumlahPendaftar) {
+                // if ($getInfoUser->ayah_id_approval == 1 && $getInfoUser->ibu_id_approval == 1) {
+                if ($getInfoEvent->maksimal_peserta > $getJumlahPendaftar) {
 
-                        // Kuota Masih Ada
+                    // Kuota Masih Ada
 
-                        // Daftar Anak
-                        $daftarEvent = new EventPeserta;
-                        $daftarEvent->event_id = $request->event_id;
-                        $daftarEvent->user_id = $request->user_id;
-                        $daftarEvent->created_by = $request->user_id;
+                    // Daftar Anak
+                    $daftarEvent = new EventPeserta;
+                    $daftarEvent->event_id = $request->event_id;
+                    $daftarEvent->user_id = $request->user_id;
+                    $daftarEvent->created_by = $request->user_id;
 
-                        // Daftar Ayah
-                        $daftarEventAyah = new EventPeserta;
-                        $daftarEventAyah->event_id = $request->event_id;
-                        $daftarEventAyah->user_id = $getInfoUser->ayah_id;
-                        $daftarEventAyah->created_by = $request->user_id;
+                    // Daftar Ayah
+                    // $daftarEventAyah = new EventPeserta;
+                    // $daftarEventAyah->event_id = $request->event_id;
+                    // $daftarEventAyah->user_id = $getInfoUser->ayah_id;
+                    // $daftarEventAyah->created_by = $request->user_id;
 
-                        // Daftar Ibu
-                        $daftarEventIbu = new EventPeserta;
-                        $daftarEventIbu->event_id = $request->event_id;
-                        $daftarEventIbu->user_id = $getInfoUser->ibu_id;
-                        $daftarEventIbu->created_by = $request->user_id;
+                    // Daftar Ibu
+                    // $daftarEventIbu = new EventPeserta;
+                    // $daftarEventIbu->event_id = $request->event_id;
+                    // $daftarEventIbu->user_id = $getInfoUser->ibu_id;
+                    // $daftarEventIbu->created_by = $request->user_id;
 
-                        $daftarEvent->save();
-                        $daftarEventAyah->save();
-                        $daftarEventIbu->save();
+                    $daftarEvent->save();
+                    // $daftarEventAyah->save();
+                    // $daftarEventIbu->save();
 
-                        return response()->json([
-                            'message'       => 'Berhasil Daftar Event',
-                            'user' => $daftarEvent,
-                        ], 200);
-                    } else {
-                        // Kuota Sudah Penuh
-                        return response()->json([
-                            'message'       => 'Kuota Sudah Penuh',
-                        ], 200);
-                    }
+                    return response()->json([
+                        'message'       => 'Berhasil Daftar Event',
+                        'user' => $daftarEvent,
+                    ], 200);
                 } else {
                     // Kuota Sudah Penuh
                     return response()->json([
-                        'message'       => 'Anda masih belum memiliki approval keluarga',
+                        'message'       => 'Kuota Sudah Penuh',
                     ], 200);
                 }
+                // }
+                // else {
+                //     // Kuota Sudah Penuh
+                //     return response()->json([
+                //         'message'       => 'Anda masih belum memiliki approval keluarga',
+                //     ], 200);
+                // }
             }
         }
     }

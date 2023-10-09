@@ -11,10 +11,10 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        // $user = User::where('username', $request->username)->first();
-        $user = User::where('username', $request->username)->first();
+        $user = User::with('pasangan')->where('username', $request->username)->first();
+        // $user = User::with('ayah', 'ibu', 'pasangan')->where('username', $request->username)->first();
         if (!$user) {
-            $user = User::where('email', $request->username)->first();
+            $user = User::with('pasangan')->where('email', $request->username)->first();
         }
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -24,12 +24,56 @@ class AuthController extends Controller
         }
 
 
+        $findOrangTua = User::where('id', $user->ayah_id)->orWhere('id', $user->ibu_id)->get();
+
+        // Find Eyang
+        $findEyang = [];
+        for ($i = 0; $i < count($findOrangTua); $i++) {
+            if ($findOrangTua[$i]) {
+                $findKakek = $findOrangTua[$i]::where('id', $findOrangTua[$i]->ayah_id)->first();
+                $findNenek = $findOrangTua[$i]::where('id', $findOrangTua[$i]->ibu_id)->first();
+                if ($findKakek) {
+                    array_push($findEyang, $findOrangTua[$i]::where('id', $findOrangTua[$i]->ayah_id)->first());
+                }
+                if ($findNenek) {
+                    array_push($findEyang, $findOrangTua[$i]::where('id', $findOrangTua[$i]->ibu_id)->first());
+                }
+            }
+        }
+
+        $findAnak = User::where('ayah_id', $user->id)->orWhere('ibu_id', $user->id)->get();
+        $findSaudara = User::where('ayah_id', $user->ayah_id)->orWhere('ibu_id', $user->ibu_id)->get();
+
+        // Find Paman
+        $getIdEyang = [];
+        for ($i = 0; $i < count($findEyang); $i++) {
+            if ($findEyang[$i]) {
+                array_push($getIdEyang, $findEyang[$i]->id);
+            }
+        }
+        $findPaman = User::whereIn('ayah_id', $getIdEyang)->orWhereIn('ibu_id', $getIdEyang)->get();
+
+        // Find Cucu
+        $getIdPaman = [];
+        for ($i = 0; $i < count($findPaman); $i++) {
+            if ($findPaman[$i]) {
+                array_push($getIdPaman, $findPaman[$i]->id);
+            }
+        }
+        $findCucu = User::whereIn('ayah_id', $getIdPaman)->orWhereIn('ibu_id', $getIdPaman)->get();
+
         $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
             'message' => 'success',
             'user' => $user,
             'token' => $token,
+            'eyang' => $findEyang,
+            'orangtua' => $findOrangTua,
+            'anak' => $findAnak,
+            'saudara' => $findSaudara,
+            'paman' => $findPaman,
+            'cucu' => $findCucu
         ], 200);
     }
 
