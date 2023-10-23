@@ -57,4 +57,9 @@ class Event extends Model
     {
         return $this->hasMany('App\Models\Event', 'event_id');
     }
+
+    public function event_tranaksi()
+    {
+        return $this->hasMany(EventTransaksies::class, 'event_id');
+    }
 }

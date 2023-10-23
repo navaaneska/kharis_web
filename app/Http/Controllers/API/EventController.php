@@ -7,8 +7,11 @@ use App\Models\Event;
 use App\Models\EventCategorie;
 use App\Models\EventMedia;
 use App\Models\EventPeserta;
+use App\Models\EventTransaksies;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class EventController extends Controller
 {
@@ -364,9 +367,45 @@ class EventController extends Controller
         ], 200);
     }
 
+    public function CheckEvent(Request $request)
+    {
+        $event = EventPeserta::with('event', 'user', 'created_by');
+        $getEventId = $request->event;
+        $getUserId = $request->user;
+        $event->where(function ($q) use ($getEventId, $getUserId) {
+            $q->where('event_id', $getEventId)
+                ->where('user_id', $getUserId);
+        });
+        $checkEvent = $event->first();
+
+        // Get Data Status Bayar
+        $user = User::find($checkEvent->created_by);
+        $getName = $user->name;
+        $transaksi = EventTransaksies::with('user');
+        $transaksi->where(function ($q) use ($getEventId, $getUserId) {
+            $q->where('event_id', $getEventId)
+                ->where('user_id', $getUserId);
+        });
+        $checkTransaksi = $transaksi->first()->status_bayar;
+
+
+        if ($checkEvent) {
+            return response()->json([
+                'success' => true,
+                'data' => 'true',
+                'message' => "Anda Sudah Mendaftar, Anda didaftarkan oleh $getName. Status Pembayaran saat ini adalah $checkTransaksi"
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => true,
+                'data' => 'false'
+            ], 200);
+        }
+    }
+
     public function DaftarEvent(Request $request)
     {
-        $event = EventPeserta::with('event', 'user');
+        $event = EventPeserta::with('event', 'user', 'created_by');
         $getEventId = $request->event_id;
         $getUserId = $request->user_id;
         $event->where(function ($q) use ($getEventId, $getUserId) {
@@ -377,10 +416,17 @@ class EventController extends Controller
 
 
         if (count($checkEvent)) {
-
+            $user = User::find($checkEvent[0]->created_by);
+            $getName = $user->name;
+            $transaksi = EventTransaksies::with('user');
+            $transaksi->where(function ($q) use ($getEventId, $getUserId) {
+                $q->where('event_id', $getEventId)
+                    ->where('user_id', $getUserId);
+            });
+            $checkTransaksi = $transaksi->first()->status_bayar;
             // Sudah Daftar
             return response()->json([
-                'message'       => 'Sudah Mendaftar',
+                'message'       => "Anda Sudah Mendaftar, Anda didaftarkan oleh $getName. Status Pembayaran saat ini adalah $checkTransaksi",
             ], 200);
         } else {
             $getJumlahPendaftar = count(EventPeserta::where('event_id', $getEventId)->get());
@@ -391,7 +437,6 @@ class EventController extends Controller
 
                 if ($getInfoEvent->maksimal_peserta > $getJumlahPendaftar) {
                     // Kuota Masih Ada
-                    // dd($request->umur);
                     $daftarEvent = new EventPeserta;
                     $daftarEvent->event_id = $request->event_id;
                     $daftarEvent->user_id = $request->user_id;
@@ -402,8 +447,22 @@ class EventController extends Controller
                         $daftarEvent->harga = $getInfoEvent->harga_perorang;
                     }
                     $daftarEvent->save();
+
+                    // Tambah Event Transaksi
+                    $eventTransaksi = new EventTransaksies;
+                    $eventTransaksi->id = Str::uuid();
+                    $eventTransaksi->event_id = $request->event_id;
+                    $eventTransaksi->user_id = $request->user_id;
+                    if ($request->umur < 12) {
+                        $eventTransaksi->jumlah_bayar = $getInfoEvent->harga_anak;
+                    } else {
+                        $eventTransaksi->jumlah_bayar = $getInfoEvent->harga_perorang;
+                    }
+                    $eventTransaksi->status_bayar = 'belum bayar';
+                    $eventTransaksi->save();
+
                     return response()->json([
-                        'message'       => 'Berhasil Daftar Event',
+                        'message'       => 'Berhasil Daftar Event, Silahkan menuju halaman checkout untuk melanjutkan pemesanan event',
                         'user' => $daftarEvent,
                     ], 200);
                 } else {
@@ -426,8 +485,18 @@ class EventController extends Controller
                         $daftarEvent->created_by = $request->created_by;
                         $daftarEvent->harga = $getInfoEvent->harga_perevent;
                         $daftarEvent->save();
+
+                        // Tambah Event Transaksi
+                        $eventTransaksi = new EventTransaksies;
+                        $eventTransaksi->id = Str::uuid();
+                        $eventTransaksi->event_id = $request->event_id;
+                        $eventTransaksi->user_id = $request->user_id;
+                        $eventTransaksi->jumlah_bayar = $getInfoEvent->harga_perevent;
+                        $eventTransaksi->status_bayar = 'belum bayar';
+                        $eventTransaksi->save();
+
                         return response()->json([
-                            'message'       => 'Berhasil Daftar Event',
+                            'message'       => "Berhasil Daftar Event, Silahkan menuju halaman checkout untuk melanjutkan pemesanan event",
                             'user' => $daftarEvent,
                         ], 200);
                     } else {
@@ -457,29 +526,25 @@ class EventController extends Controller
                     $daftarEvent->created_by = $request->created_by;
                     if ($request->user_id == $request->created_by) {
                         $daftarEvent->harga = $getInfoEvent->harga_perevent;
+
+                        // Tambah Event Transaksi
+                        $eventTransaksi = new EventTransaksies;
+                        $eventTransaksi->id = Str::uuid();
+                        $eventTransaksi->event_id = $request->event_id;
+                        $eventTransaksi->user_id = $request->user_id;
+                        $eventTransaksi->jumlah_bayar = $getInfoEvent->harga_perevent;
+                        $eventTransaksi->status_bayar = 'belum bayar';
+                        $eventTransaksi->save();
                     } else {
                         $daftarEvent->harga = 0;
                     }
 
-
-                    // Daftar Ayah
-                    // $daftarEventAyah = new EventPeserta;
-                    // $daftarEventAyah->event_id = $request->event_id;
-                    // $daftarEventAyah->user_id = $getInfoUser->ayah_id;
-                    // $daftarEventAyah->created_by = $request->user_id;
-
-                    // Daftar Ibu
-                    // $daftarEventIbu = new EventPeserta;
-                    // $daftarEventIbu->event_id = $request->event_id;
-                    // $daftarEventIbu->user_id = $getInfoUser->ibu_id;
-                    // $daftarEventIbu->created_by = $request->user_id;
-
                     $daftarEvent->save();
-                    // $daftarEventAyah->save();
-                    // $daftarEventIbu->save();
+                    $user = User::find($request->user_id)->name;
+
 
                     return response()->json([
-                        'message'       => 'Berhasil Daftar Event',
+                        'message'       => "$user Berhasil Daftar Event",
                         'user' => $daftarEvent,
                     ], 200);
                 } else {
@@ -497,5 +562,27 @@ class EventController extends Controller
                 // }
             }
         }
+    }
+
+    public function CartList(Request $request)
+    {
+        $events = EventTransaksies::with('event')->where('user_id', $request->user)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $events
+        ], 200);
+    }
+
+    public function CartListDetail(Request $request)
+    {
+        $events = EventTransaksies::with('event')->where('user_id', $request->user)->where('event_id', $request->event)->first();
+        $pesertas = EventPeserta::with('user', 'pasangan')->where('created_by', $request->user)->where('event_id', $request->event)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $events,
+            'peserta' => $pesertas
+        ], 200);
     }
 }

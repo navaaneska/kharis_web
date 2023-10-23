@@ -65,8 +65,13 @@ class User extends Authenticatable
         return $this->hasMany(EventPesertaPresensi::class, 'user_id');
     }
 
-    // Keluarga
+    public function event_tranaksi()
+    {
+        return $this->hasMany(EventTransaksies::class, 'user_id');
+    }
 
+
+    // Keluarga
     public function ayah_id()
     {
         return $this->hasMany(User::class, 'ayah_id');

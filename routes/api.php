@@ -46,14 +46,17 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/event/streaming/{streaming}/content/{content}', [EventController::class, 'Streaming']);
     Route::get('/event/upcoming/{upcoming}/streaming/{streaming}/content/{content}', [EventController::class, 'Streaming']);
     Route::get('/media/content/{content}', [EventController::class, 'Media']);
+    Route::get('/check-event/event/{event}/user/{user}', [EventController::class, 'CheckEvent']);
     Route::post('/daftar-event', [EventController::class, 'DaftarEvent']);
+    Route::get('/cart-list/user/{user}', [EventController::class, 'CartList']);
+    Route::get('/cart-list-detail/user/{user}/event/{event}', [EventController::class, 'CartListDetail']);
+    Route::post('create-peserta-presensi', [EventPesertaPresensiController::class, 'store']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/checkGoogleLogin', [AuthController::class, 'checkGoogleLogin']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('event_kategori_by_jenis_kategori/{kategori}', [EventController::class, 'event_kategori_by_jenis_kategori']);
-Route::post('create-peserta-presensi', [EventPesertaPresensiController::class, 'store']);
 
 
 

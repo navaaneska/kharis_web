@@ -8,6 +8,8 @@ use App\Models\EventPesertaPresensi;
 use App\Models\EventQrcode;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class EventPesertaPresensiController extends Controller
 {
@@ -34,39 +36,50 @@ class EventPesertaPresensiController extends Controller
     {
         // Mengecek Qrcode
         $getQrCode = EventQrcode::where('qr', $request->qrcode)->first();
+        // $user = DB::table('personal_access_tokens')->where('token', $request->token)->value('tokenable_id');\
+        // dd($getQrCode->event->nama);
+
+        // CheckToken
+        $token = PersonalAccessToken::findToken($request->token);
+        $user = $token->tokenable;
+        // dd($user->id);
+
+        // $user = Token::find($token_id)->user;
+
         if ($getQrCode) {
 
             // Mengecek Event
-            $checkEventPeserta = EventPeserta::where('event_id', $getQrCode->event_id)->where('user_id', $request->user_id)->first();
+            $checkEventPeserta = EventPeserta::where('event_id', $getQrCode->event_id)->where('user_id', $user->id)->first();
             if ($checkEventPeserta) {
 
                 // Mengecek Kehadiran
-                $checkKehadiran = EventPesertaPresensi::where('qrcode_id', $getQrCode->id)->where('user_id', $request->user_id)->first();
+                $checkKehadiran = EventPesertaPresensi::where('qrcode_id', $getQrCode->id)->where('user_id', $user->id)->first();
                 if ($checkKehadiran) {
 
                     return response()->json([
                         'message'       => 'Anda sudah melakukan absen sebelumnya',
-                    ], 404);
+                    ], 200);
                 } else {
                     $eventPesertaPresensi = new EventPesertaPresensi;
                     $eventPesertaPresensi->qrcode_id = $getQrCode->id;
-                    $eventPesertaPresensi->user_id = $request->user_id;
+                    $eventPesertaPresensi->user_id = $user->id;
                     $eventPesertaPresensi->jam_presensi = Carbon::now();
                     $eventPesertaPresensi->save();
+                    $getEvent = $getQrCode->event->nama;
 
                     return response()->json([
-                        'message'       => 'Berhasil melakukan presensi',
+                        'message'       => "Berhasil melakukan presensi $getQrCode->judul, pada event $getEvent",
                     ], 200);
                 }
             } else {
                 return response()->json([
                     'message'       => 'Peserta tidak terdaftar pada event ini',
-                ], 404);
+                ], 200);
             }
         } else {
             return response()->json([
                 'message'       => 'qrcode tidak valid',
-            ], 404);
+            ], 200);
         }
     }
 
