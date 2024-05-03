@@ -25,12 +25,12 @@ class UserSeeder extends Seeder
             'pekerjaan' => 'mahasiswa',
             'jenis_kelamin' => 'pria',
             'tanggal_lahir' => Carbon::today(),
-            'ayah_id' => 2,
-            'ayah_id_approval' => true,
-            'ibu_id' => 3,
-            'ibu_id_approval' => true,
-            'pasangan_id' => 4,
-            'pasangan_id_approval' => true,
+            'ayah_id' => null, //2
+            'ayah_id_approval' => null, //true
+            'ibu_id' => null, //3
+            'ibu_id_approval' => null, //true
+            'pasangan_id' => null, //4
+            'pasangan_id_approval' => null, //true
         ]);
     }
 }

@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             EventCategorieSeeder::class,
-            EventSeeder::class,
-            EventMediaSeeder::class,
-            EventPengisiAcaraSeeder::class,
-            EventPesertaSeeder::class,
+            // EventSeeder::class,
+            // EventMediaSeeder::class,
+            // EventPengisiAcaraSeeder::class,
+            // EventPesertaSeeder::class,
 
         ]);
     }
