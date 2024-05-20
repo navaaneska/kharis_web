@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\EventCategorieController;
 use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\EventPesertaPresensiController;
+use App\Http\Controllers\API\MidtransController;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/cart-list/user/{user}', [EventController::class, 'CartList']);
     Route::get('/cart-list-detail/user/{user}/event/{event}', [EventController::class, 'CartListDetail']);
     Route::post('create-peserta-presensi', [EventPesertaPresensiController::class, 'store']);
+
+    // Payment Gateway
+    Route::post('/checkout-item', [MidtransController::class, 'create']);
+    Route::post('/midtrans-webhook', [MidtransController::class, 'midtrans_hook']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

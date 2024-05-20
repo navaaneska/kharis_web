@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Traits\codeGenerate;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventCategorie;
@@ -15,6 +16,7 @@ use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
+    use CodeGenerate;
     /**
      * Display a listing of the resource.
      */
@@ -378,18 +380,20 @@ class EventController extends Controller
         });
         $checkEvent = $event->first();
 
-        // Get Data Status Bayar
-        $user = User::find($checkEvent->created_by);
-        $getName = $user->name;
-        $transaksi = EventTransaksies::with('user');
-        $transaksi->where(function ($q) use ($getEventId, $getUserId) {
-            $q->where('event_id', $getEventId)
-                ->where('user_id', $getUserId);
-        });
-        $checkTransaksi = $transaksi->first()->status_bayar;
+        if (isset($checkEvent)) {
+            // Get Data Status Bayar
+            $user = User::find($checkEvent->created_by);
+            $getName = $user->name;
+            $transaksi = EventTransaksies::with('user');
+            $transaksi->where(function ($q) use ($getEventId, $getUserId) {
+                $q->where('event_id', $getEventId)
+                    ->where('user_id', $getUserId);
+            });
+            $checkTransaksi = $transaksi->first()->status_bayar;
+        }
 
 
-        if ($checkEvent) {
+        if (isset($checkEvent)) {
             return response()->json([
                 'success' => true,
                 'data' => 'true',
@@ -414,6 +418,7 @@ class EventController extends Controller
         });
         $checkEvent = $event->get();
 
+        $kode = $this->getCode();
 
         if (count($checkEvent)) {
             $user = User::find($checkEvent[0]->created_by);
@@ -451,6 +456,7 @@ class EventController extends Controller
                     // Tambah Event Transaksi
                     $eventTransaksi = new EventTransaksies;
                     $eventTransaksi->id = Str::uuid();
+                    $eventTransaksi->order_id = $kode;
                     $eventTransaksi->event_id = $request->event_id;
                     $eventTransaksi->user_id = $request->user_id;
                     if ($request->umur < 12) {
@@ -489,6 +495,7 @@ class EventController extends Controller
                         // Tambah Event Transaksi
                         $eventTransaksi = new EventTransaksies;
                         $eventTransaksi->id = Str::uuid();
+                        $eventTransaksi->order_id = $kode;
                         $eventTransaksi->event_id = $request->event_id;
                         $eventTransaksi->user_id = $request->user_id;
                         $eventTransaksi->jumlah_bayar = $getInfoEvent->harga_perevent;
@@ -530,6 +537,7 @@ class EventController extends Controller
                         // Tambah Event Transaksi
                         $eventTransaksi = new EventTransaksies;
                         $eventTransaksi->id = Str::uuid();
+                        $eventTransaksi->order_id = $kode;
                         $eventTransaksi->event_id = $request->event_id;
                         $eventTransaksi->user_id = $request->user_id;
                         $eventTransaksi->jumlah_bayar = $getInfoEvent->harga_perevent;
