@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Traits\codeGenerate;
 use App\Http\Controllers\Controller;
 use App\Models\EventTransaksies;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 
 class MidtransController extends Controller
 {
-
+    use CodeGenerate;
     /**
      * Display a listing of the resource.
      */
@@ -43,7 +45,35 @@ class MidtransController extends Controller
         );
 
         $bank_transfer = array(
-            'bank' => $bank
+            'bank' => $bank,
+            "va_number" => substr(Auth::user()->whatsapp, -11)
+        );
+
+        if (!isset(explode(" ", Auth::user()->name)[1])) {
+            $user_info = array(
+                'email' => Auth::user()->email,
+                'first_name' => ucwords(explode(" ", Auth::user()->name)[0]),
+                'phone' => Auth::user()->whatsapp
+            );
+        } else {
+            $user_info = array(
+                'email' => Auth::user()->email,
+                'first_name' =>  ucwords(explode(" ", Auth::user()->name)[0]),
+                'last_name' => ucwords(explode(" ", Auth::user()->name)[1]),
+                'phone' => Auth::user()->whatsapp
+            );
+        }
+
+        $item_details = array(
+            'price' => (int)$request->price_item,
+            'quantity' => (int)$request->quantity_item,
+            'name' => $request->name_item
+        );
+
+        $item_details_admin = array(
+            'price' => 4000,
+            'quantity' => 1,
+            'name' => "Biaya Admin"
         );
 
         if ($bank == 'bca' || $bank == 'bni' || $bank == 'bri' || $bank == 'cimb') {
@@ -52,19 +82,24 @@ class MidtransController extends Controller
             $transaction_data = array(
                 'payment_type' => $payment_type,
                 'transaction_details' => $transaction,
-                'bank_transfer' => $bank_transfer
+                'customer_details' => $user_info,
+                'item_details' => [$item_details, $item_details_admin],
+                'bank_transfer' => $bank_transfer,
             );
         } else if ($bank == 'mandiri') {
             $payment_type = "echannel";
 
             $echannel = array(
                 'bill_info1' => "Payment:",
-                'bill_info2' => "Kharis Mobile"
+                'bill_info2' => "Kharis Mobile",
+                'bill_key' => substr(Auth::user()->whatsapp, -11)
             );
 
             $transaction_data = array(
                 'payment_type' => $payment_type,
                 'transaction_details' => $transaction,
+                'customer_details' => $user_info,
+                'item_details' => [$item_details, $item_details_admin],
                 'echannel' => $echannel
             );
         } else if ($bank == 'permata') {
@@ -73,6 +108,9 @@ class MidtransController extends Controller
             $transaction_data = array(
                 'payment_type' => $payment_type,
                 'transaction_details' => $transaction,
+                'customer_details' => $user_info,
+                'item_details' => [$item_details, $item_details_admin],
+                'bank_transfer' => $bank_transfer
             );
         }
 
@@ -84,7 +122,7 @@ class MidtransController extends Controller
 
         if ($bank == 'bca' || $bank == 'bni' || $bank == 'bri' || $bank == 'cimb') {
             DB::table('event_transaksies')
-                ->where('order_id', $request->order_id)
+            ->where('order_id', $request->order_id)
                 ->update([
                     'transaction_date' => Carbon::now(),
                     'transaction_time' => $data['transaction_time'],
@@ -130,6 +168,41 @@ class MidtransController extends Controller
     {
         $result = file_get_contents('php://input');
         $data = json_decode($result, true);
+
+        $status = "";
+        if ($data['transaction_status'] == "settlement" || $data['transaction_status'] == "capture") {
+            $status = 'Sukses';
+
+            DB::table('event_transaksies')
+            ->where('order_id', $data['order_id'])
+                ->update([
+                    'status_bayar' => $status,
+                ]);
+        } else if($data['transaction_status'] == "expire"){
+            $kode = $this->getCode();
+
+            DB::table('event_transaksies')
+            ->where('order_id', $data['order_id'])
+                ->update([
+                    'order_id' => $kode,
+                    'transaction_date' => null,
+                    'transaction_time' => null,
+                    'transaction_id' => null,
+                    'payment_type' => null,
+                    'bank' => null,
+                    'va_number' => null,
+                    'status_bayar' => 'belum bayar',
+                    'expiry_time' => null,
+                ]);
+        } else {
+            $status = $data['transaction_status'];
+
+            DB::table('event_transaksies')
+            ->where('order_id', $data['order_id'])
+                ->update([
+                    'status_bayar' => $status,
+                ]);
+        }
 
         return response()->json($data);
     }
