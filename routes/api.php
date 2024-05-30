@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ComponentController;
 use App\Http\Controllers\API\EventCategorieController;
 use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\EventPesertaPresensiController;
@@ -53,10 +54,19 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/cart-list-detail/user/{user}/event/{event}', [EventController::class, 'CartListDetail']);
     Route::post('create-peserta-presensi', [EventPesertaPresensiController::class, 'store']);
 
+    Route::post('/check-data-transaksi', [MidtransController::class, 'check_transaksi']);
+
     // Payment Gateway
     Route::post('/checkout-item', [MidtransController::class, 'create']);
-    Route::post('/midtrans-webhook', [MidtransController::class, 'midtrans_hook']);
+    // Route::post('/token/payment', [MidtransController::class, 'getTokenCreditCard']);
+
+    // Component
+    Route::get('/information/kegiatan', [ComponentController::class, 'JumlahKegiatan']);
+    Route::get('/information/pelayanan', [ComponentController::class, 'JumlahPelayanan']);
+    Route::get('/information/bookmark', [ComponentController::class, 'JumlahBookmark']);
 });
+
+Route::post('/midtrans-webhook', [MidtransController::class, 'midtrans_hook']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/checkGoogleLogin', [AuthController::class, 'checkGoogleLogin']);

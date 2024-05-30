@@ -22,6 +22,31 @@ class MidtransController extends Controller
         //
     }
 
+    public static function tokenMidtrans($credit_card)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.sandbox.midtrans.com/v2/token?' . $credit_card,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Accept: application/json',
+                'Authorization: Basic ' . base64_encode(env('MIDTRANS_SERVER_KEY') . ':')
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return response()->json($response);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -112,6 +137,49 @@ class MidtransController extends Controller
                 'item_details' => [$item_details, $item_details_admin],
                 'bank_transfer' => $bank_transfer
             );
+        } else if ($bank == 'kartu_kredit') {
+            $payment_type = "credit_card";
+
+            try {
+                $data_cc = [
+                    'client_key' => env('MIDTRANS_CLIENT_KEY'),
+                    'card_number' => $request->card_number,
+                    'card_exp_month' => $request->card_exp_month,
+                    'card_exp_year' => $request->card_exp_year,
+                    'card_cvv' => $request->card_cvv
+                ];
+
+                $data = http_build_query($data_cc);
+                $token = $this::tokenMidtrans($data);
+
+                if (!$token) {
+                    return [
+                        'status_code' => 0,
+                        'message' => "Credit Card Not Valid / Support"
+                    ];
+                }
+
+                $token_id = json_decode($token->original);
+
+                $credit_card = array(
+                    'token_id' => $token_id->token_id,
+                    "authentication" => true,
+                    "bank" => 'bni',
+                );
+
+                $transaction_data = array(
+                    'payment_type' => $payment_type,
+                    'transaction_details' => $transaction,
+                    'customer_details' => $user_info,
+                    'item_details' => [$item_details, $item_details_admin],
+                    'credit_card' => $credit_card
+                );
+            } catch (\Throwable $th) {
+                return [
+                    'status_code' => 0,
+                    'message' => "Credit Card Not Valid / Support"
+                ];
+            }
         }
 
         $response = Http::withHeaders($header)->post('https://api.sandbox.midtrans.com/v2/charge', $transaction_data);
@@ -159,6 +227,19 @@ class MidtransController extends Controller
                     'status_bayar' => $data['transaction_status'],
                     'expiry_time' => $data['expiry_time'],
                 ]);
+        } else if ($bank == 'kartu_kredit') {
+            DB::table('event_transaksies')
+                ->where('order_id', $request->order_id)
+                ->update([
+                    'transaction_date' => Carbon::now(),
+                    'transaction_time' => $data['transaction_time'],
+                    'transaction_id' => $data['transaction_id'],
+                    'payment_type' => $data['payment_type'],
+                    'bank' => $data['bank'],
+                    'va_number' => null,
+                    'status_bayar' => $data['transaction_status'],
+                    'expiry_time' => $data['expiry_time'],
+                ]);
         }
 
         return response()->json($data);
@@ -177,6 +258,7 @@ class MidtransController extends Controller
             ->where('order_id', $data['order_id'])
                 ->update([
                     'status_bayar' => $status,
+                    'tanggal_bayar' => $data['transaction_time'],
                 ]);
         } else if($data['transaction_status'] == "expire"){
             $kode = $this->getCode();
@@ -205,6 +287,17 @@ class MidtransController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function check_transaksi(Request $request)
+    {
+        $checkTransaksi = $request->transaksi_id;
+
+        $transaksi = EventTransaksies::where('transaction_id', $checkTransaksi)->first();
+        return response()->json([
+            'message'       => 'Success',
+            'data'          => $transaksi->status_bayar,
+        ], 200);
     }
 
     /**
